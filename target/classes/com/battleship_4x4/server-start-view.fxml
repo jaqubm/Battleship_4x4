@@ -10,7 +10,7 @@
 
 <AnchorPane prefHeight="320.0" prefWidth="320.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.battleship_4x4.Server">
    <children>
-      <ImageView fitHeight="125.0" fitWidth="190.0" layoutX="69.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="125.0" fitWidth="190.0" layoutX="69.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@sprites/UI/logotype_480.png" />
          </image>

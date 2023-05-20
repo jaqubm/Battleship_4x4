@@ -12,50 +12,45 @@ import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.Inet4Address;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
-class ServerBackend implements Runnable {
+class ServerBackend {
 
-    private Socket socket;
-    private ServerSocket server;
-    private DataInputStream[] in;
-    private DataOutputStream[] out;
+    private final ServerSocket server;
+    private Socket[] client;
+    private DataInputStream[] clientInput;
+    private DataOutputStream[] clientOutput;
 
-    private boolean serverWork;
-
-    public ServerBackend(int port) throws IOException {
-        server = new ServerSocket(port);
-        serverWork = true;
+    public ServerBackend(int port, int players, Inet4Address IP) throws IOException {
+        server = new ServerSocket(port, players, IP);
+        client = new Socket[players];
+        clientInput = new DataInputStream[players];
+        clientOutput = new DataOutputStream[players];
+        System.out.println("Server is ON!");
     }
 
     public void establishingConnection(int id) {
         try {
-            socket = server.accept();
-            in[id] = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-            out[id] = new DataOutputStream(socket.getOutputStream());
+            client[id] = server.accept();
+            clientInput[id] = new DataInputStream(new BufferedInputStream(client[id].getInputStream()));
+            clientOutput[id] = new DataOutputStream(client[id].getOutputStream());
         }
         catch (IOException err) {
             err.printStackTrace();
         }
     }
-
-    @Override
-    public void run() {
-        while(serverWork) {
-
-        }
-    }
-
-    /*public static void main(String[] args) throws IOException {
-        Thread serverRunning = new Thread(server);
-        serverRunning.start();
-    }*/
 }
 
 public class Server extends Application {
 
+    private int MAX_PLAYERS = 4;
     private ServerBackend server;
+
+    @FXML
+    private TextField serverIPTextField;
 
     @FXML
     private TextField serverPortTextField;
@@ -68,21 +63,27 @@ public class Server extends Application {
         badServerPort.setText("");
 
         try {
-            int serverPort = Integer.parseInt(serverPortTextField.getText());
-            server = new ServerBackend(serverPort);
+            Inet4Address serverIP = (Inet4Address) Inet4Address.getByName(serverIPTextField.getText());
+            try {
+                int serverPort = Integer.parseInt(serverPortTextField.getText());
+                server = new ServerBackend(serverPort, MAX_PLAYERS, serverIP);
+            }
+            catch(NumberFormatException err) {
+                badServerPort.setText("Something is wrong with the server port. Try again!");
+            }
+            catch(IOException err) {
+                badServerPort.setText("Wrong server port. Try again!");
+            }
         }
-        catch(NumberFormatException err) {
-            badServerPort.setText("Something is wrong with the server port. Try again!");
-        }
-        catch(IOException err) {
-            badServerPort.setText("Wrong server port. Try again!");
+        catch(UnknownHostException err) {
+            badServerPort.setText("Something is wrong with the server IP. Try again!");
         }
     }
 
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("server-start-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+        Scene scene = new Scene(fxmlLoader.load(), 320, 320);
         stage.setTitle("Battleship 4x4 Server");
         stage.setResizable(false);
         stage.setScene(scene);
