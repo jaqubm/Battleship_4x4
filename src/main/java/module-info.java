@@ -4,6 +4,6 @@ module com.example.battleship_4x4 {
             
                                 requires com.almasb.fxgl.all;
     
-    opens com.example.battleship_4x4 to javafx.fxml;
-    exports com.example.battleship_4x4;
+    opens com.battleship_4x4 to javafx.fxml;
+    exports com.battleship_4x4;
 }

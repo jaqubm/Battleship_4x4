@@ -1,4 +1,4 @@
-package com.example.battleship_4x4;
+package com.battleship_4x4;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
