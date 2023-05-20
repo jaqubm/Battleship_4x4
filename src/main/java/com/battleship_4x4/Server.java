@@ -20,13 +20,15 @@ import java.net.UnknownHostException;
 class ServerBackend {
 
     private final ServerSocket server;
-    private Socket[] client;
-    private DataInputStream[] clientInput;
-    private DataOutputStream[] clientOutput;
+    private final Socket[] client;
+    private final String[] clientName;
+    private final DataInputStream[] clientInput;
+    private final DataOutputStream[] clientOutput;
 
     public ServerBackend(int port, int players, Inet4Address IP) throws IOException {
         server = new ServerSocket(port, players, IP);
         client = new Socket[players];
+        clientName = new String[players];
         clientInput = new DataInputStream[players];
         clientOutput = new DataOutputStream[players];
         System.out.println("Server is ON!");
@@ -37,6 +39,7 @@ class ServerBackend {
             client[id] = server.accept();
             clientInput[id] = new DataInputStream(new BufferedInputStream(client[id].getInputStream()));
             clientOutput[id] = new DataOutputStream(client[id].getOutputStream());
+            clientName[id] = clientInput[id].readUTF();
         }
         catch (IOException err) {
             err.printStackTrace();
