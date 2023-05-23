@@ -1,13 +1,18 @@
 package com.battleship_4x4;
 
+import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
-public class MenuController
-{
+import java.io.IOException;
+
+public class MainMenu extends Application {
+
     @FXML
     private Label testText_1;
     @FXML
@@ -57,5 +62,17 @@ public class MenuController
     {
         Platform.exit();
         System.exit(0);
+    }
+    @Override
+    public void start(Stage stage) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(MainMenu.class.getResource("main-menu.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 1200, 800);
+        stage.setTitle("Battleship_4x4");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public static void main(String[] args) {
+        launch();
     }
 }

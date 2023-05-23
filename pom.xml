@@ -72,7 +72,7 @@
             <!-- Default configuration for running with: mvn clean javafx:run -->
             <id>default-cli</id>
             <configuration>
-              <mainClass>com.example.battleship_4x4/com.battleship_4x4.MenuApplication</mainClass>
+              <mainClass>com.example.battleship_4x4/com.battleship_4x4.MainMenu</mainClass>
               <launcher>app</launcher>
               <jlinkZipName>app</jlinkZipName>
               <jlinkImageName>app</jlinkImageName>

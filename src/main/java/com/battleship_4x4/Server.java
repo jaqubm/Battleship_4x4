@@ -85,7 +85,7 @@ public class Server extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("server-start-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Server.class.getResource("server-start.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 320, 320);
         stage.setTitle("Battleship 4x4 Server");
         stage.setResizable(false);
