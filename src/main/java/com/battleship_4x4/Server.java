@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.BufferedInputStream;
@@ -53,6 +54,15 @@ public class Server extends Application {
     private ServerBackend server;
 
     @FXML
+    private AnchorPane serverMainView;
+
+    @FXML
+    private Label gameStatus;
+
+    @FXML
+    private AnchorPane serverStartView;
+
+    @FXML
     private TextField serverIPTextField;
 
     @FXML
@@ -60,6 +70,10 @@ public class Server extends Application {
 
     @FXML
     private Label badServerPort;
+
+    void waitingForPlayers() {
+        gameStatus.setText("Waiting for players");
+    }
 
     @FXML
     public void startServer() {
@@ -69,7 +83,13 @@ public class Server extends Application {
             Inet4Address serverIP = (Inet4Address) Inet4Address.getByName(serverIPTextField.getText());
             try {
                 int serverPort = Integer.parseInt(serverPortTextField.getText());
+
                 server = new ServerBackend(serverPort, MAX_PLAYERS, serverIP);
+
+                serverStartView.setVisible(false);
+                serverMainView.setVisible(true);
+
+                waitingForPlayers();
             }
             catch(NumberFormatException err) {
                 badServerPort.setText("Something is wrong with the server port. Try again!");
@@ -85,7 +105,7 @@ public class Server extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Server.class.getResource("server-start.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Server.class.getResource("server.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 320, 320);
         stage.setTitle("Battleship 4x4 Server");
         stage.setResizable(false);
