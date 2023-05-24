@@ -17,31 +17,30 @@
       </ImageView>
       <AnchorPane fx:id="serverStartView" maxHeight="320.0" maxWidth="320.0" minHeight="320.0" minWidth="320.0" prefHeight="320.0" prefWidth="320.0">
          <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutY="133.0" prefHeight="27.0" prefWidth="320.0" text="Enter server IP:" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutY="147.0" prefHeight="27.0" prefWidth="320.0" text="Enter server IP:" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="serverIPTextField" alignment="CENTER" layoutX="85.0" layoutY="160.0" AnchorPane.leftAnchor="85.0" AnchorPane.rightAnchor="86.0" />
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutY="185.0" prefHeight="27.0" prefWidth="320.0" text="Enter server port:" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <TextField fx:id="serverPortTextField" alignment="CENTER" layoutX="85.0" layoutY="212.0" AnchorPane.leftAnchor="85.0" AnchorPane.rightAnchor="86.0" />
-            <Button layoutX="75.0" layoutY="247.0" mnemonicParsing="false" onAction="#startServer" text="Start Server" AnchorPane.leftAnchor="75.0" AnchorPane.rightAnchor="75.0">
+            <TextField fx:id="serverIPTextField" alignment="CENTER" layoutX="86.0" layoutY="174.0" AnchorPane.leftAnchor="86.0" AnchorPane.rightAnchor="85.0" />
+            <Button layoutX="76.0" layoutY="228.0" mnemonicParsing="false" onAction="#startServer" text="Start Server" AnchorPane.leftAnchor="76.0" AnchorPane.rightAnchor="74.0">
                <font>
                   <Font size="24.0" />
                </font>
             </Button>
-            <Label fx:id="badServerPort" alignment="CENTER" layoutY="300.0" prefHeight="17.0" prefWidth="320.0" textAlignment="CENTER" textFill="RED" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <Label fx:id="badServerIP" alignment="CENTER" layoutY="279.0" prefHeight="17.0" prefWidth="320.0" textAlignment="CENTER" textFill="RED" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="serverMainView" prefHeight="320.0" prefWidth="320.0" visible="false">
          <children>
             <Label fx:id="gameStatus" alignment="CENTER" layoutY="143.0" prefWidth="320.0">
                <font>
-                  <Font size="24.0" />
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="playersConnectedLabel" alignment="CENTER" layoutY="178.0" prefWidth="320.0">
+               <font>
+                  <Font size="18.0" />
                </font>
             </Label>
          </children>

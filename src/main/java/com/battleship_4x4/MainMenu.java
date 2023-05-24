@@ -10,6 +10,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
 
 public class MainMenu extends Application {
 
@@ -32,8 +34,7 @@ public class MainMenu extends Application {
         testText_2.setText("");
     }
     @FXML
-    protected void onJoinButtonClick()
-    {
+    protected void onJoinButtonClick() throws IOException {
         testText_2.setText("Join button was clicked!");
         testText_1.setText("");
         String username=username_textfield.getText();
@@ -41,21 +42,24 @@ public class MainMenu extends Application {
         {
             username_error.setText("Username can't be empty!");
         }
-
         else
         {
             System.out.println(username);
             username_error.setText("");
-        }
-        String ip=ip_textfield.getText();
-        if(ip.equals(""))
-        {
-            ip_error.setText("IP can't be empty!");
-        }
-        else
-        {
-            System.out.println(ip);
-            ip_error.setText("");
+
+            String ip=ip_textfield.getText();
+            if(ip.equals(""))
+            {
+                ip_error.setText("IP can't be empty!");
+            }
+            else
+            {
+                System.out.println(ip);
+
+                Client client = new Client(username, (Inet4Address) Inet4Address.getByName(ip));
+                ip_error.setText("Connected");
+                client.closeConnection();
+            }
         }
     }
     public void onExitButtonClick()

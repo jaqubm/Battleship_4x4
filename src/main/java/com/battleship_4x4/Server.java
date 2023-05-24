@@ -1,6 +1,7 @@
 package com.battleship_4x4;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -17,41 +18,45 @@ import java.net.Inet4Address;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 
 class ServerBackend {
 
+    private final Server serverClass;
     private final ServerSocket server;
-    private final Socket[] client;
-    private final String[] clientName;
-    private final DataInputStream[] clientInput;
-    private final DataOutputStream[] clientOutput;
+    private final ArrayList<Socket> client;
+    private final ArrayList<String> clientName;
+    private final ArrayList<DataInputStream> clientInput;
+    private final ArrayList<DataOutputStream> clientOutput;
 
-    public ServerBackend(int port, int players, Inet4Address IP) throws IOException {
+    public ServerBackend(int port, int players, Inet4Address IP, Server serverClass) throws IOException {
+        this.serverClass = serverClass;
         server = new ServerSocket(port, players, IP);
-        client = new Socket[players];
-        clientName = new String[players];
-        clientInput = new DataInputStream[players];
-        clientOutput = new DataOutputStream[players];
+        client = new ArrayList<>();
+        clientName = new ArrayList<>();
+        clientInput = new ArrayList<>();
+        clientOutput = new ArrayList<>();
         System.out.println("Server is ON!");
     }
 
-    public void establishingConnection(int id) {
-        try {
-            client[id] = server.accept();
-            clientInput[id] = new DataInputStream(new BufferedInputStream(client[id].getInputStream()));
-            clientOutput[id] = new DataOutputStream(client[id].getOutputStream());
-            clientName[id] = clientInput[id].readUTF();
-        }
-        catch (IOException err) {
-            err.printStackTrace();
-        }
+    public void establishingConnection(int id) throws IOException {
+        client.add(id, server.accept());
+        clientInput.add(id, new DataInputStream(new BufferedInputStream(client.get(id).getInputStream())));
+        clientOutput.add(id, new DataOutputStream(client.get(id).getOutputStream()));
+        clientName.add(id, clientInput.get(id).readUTF());
+    }
+
+    public String getClientName(int id) {
+        return clientName.get(id);
     }
 }
 
-public class Server extends Application {
+public class Server extends Application implements Runnable{
 
-    private int MAX_PLAYERS = 4;
+    private final int MAX_PLAYERS = 4;
+    private int playersConnected = 0;
     private ServerBackend server;
+    public final int PORT = 5000;
 
     @FXML
     private AnchorPane serverMainView;
@@ -60,46 +65,47 @@ public class Server extends Application {
     private Label gameStatus;
 
     @FXML
+    private Label playersConnectedLabel;
+
+    @FXML
     private AnchorPane serverStartView;
 
     @FXML
     private TextField serverIPTextField;
 
     @FXML
-    private TextField serverPortTextField;
+    private Label badServerIP;
 
-    @FXML
-    private Label badServerPort;
-
-    void waitingForPlayers() {
+    void waitingForPlayers() throws IOException {
         gameStatus.setText("Waiting for players");
+        updateConnectedPlayers();
+
+        Thread serverThread = new Thread(this);
+        serverThread.start();
+    }
+
+    public void updateConnectedPlayers() {
+        playersConnectedLabel.setText(playersConnected + "/" + MAX_PLAYERS + " players connected");
     }
 
     @FXML
     public void startServer() {
-        badServerPort.setText("");
+        badServerIP.setText("");
 
         try {
             Inet4Address serverIP = (Inet4Address) Inet4Address.getByName(serverIPTextField.getText());
-            try {
-                int serverPort = Integer.parseInt(serverPortTextField.getText());
 
-                server = new ServerBackend(serverPort, MAX_PLAYERS, serverIP);
+            server = new ServerBackend(PORT, MAX_PLAYERS, serverIP, this);
 
-                serverStartView.setVisible(false);
-                serverMainView.setVisible(true);
+            serverStartView.setVisible(false);
+            serverMainView.setVisible(true);
 
-                waitingForPlayers();
-            }
-            catch(NumberFormatException err) {
-                badServerPort.setText("Something is wrong with the server port. Try again!");
-            }
-            catch(IOException err) {
-                badServerPort.setText("Wrong server port. Try again!");
-            }
+            waitingForPlayers();
         }
         catch(UnknownHostException err) {
-            badServerPort.setText("Something is wrong with the server IP. Try again!");
+            badServerIP.setText("Something is wrong with the server IP. Try again!");
+        } catch (IOException err) {
+            throw new RuntimeException(err);
         }
     }
 
@@ -115,5 +121,20 @@ public class Server extends Application {
 
     public static void main(String[] args) {
         launch();
+    }
+
+    @Override
+    public void run() {
+        while (playersConnected != 4) {
+            try {
+                server.establishingConnection(playersConnected);
+                System.out.println(server.getClientName(playersConnected));
+                playersConnected++;
+
+                Platform.runLater(this::updateConnectedPlayers);
+            } catch (IOException err) {
+                throw new RuntimeException(err);
+            }
+        }
     }
 }
