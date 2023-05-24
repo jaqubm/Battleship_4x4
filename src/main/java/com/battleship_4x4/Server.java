@@ -22,15 +22,13 @@ import java.util.ArrayList;
 
 class ServerBackend {
 
-    private final Server serverClass;
     private final ServerSocket server;
     private final ArrayList<Socket> client;
     private final ArrayList<String> clientName;
     private final ArrayList<DataInputStream> clientInput;
     private final ArrayList<DataOutputStream> clientOutput;
 
-    public ServerBackend(int port, int players, Inet4Address IP, Server serverClass) throws IOException {
-        this.serverClass = serverClass;
+    public ServerBackend(int port, int players, Inet4Address IP) throws IOException {
         server = new ServerSocket(port, players, IP);
         client = new ArrayList<>();
         clientName = new ArrayList<>();
@@ -95,7 +93,7 @@ public class Server extends Application implements Runnable{
         try {
             Inet4Address serverIP = (Inet4Address) Inet4Address.getByName(serverIPTextField.getText());
 
-            server = new ServerBackend(PORT, MAX_PLAYERS, serverIP, this);
+            server = new ServerBackend(PORT, MAX_PLAYERS, serverIP);
 
             serverStartView.setVisible(false);
             serverMainView.setVisible(true);
