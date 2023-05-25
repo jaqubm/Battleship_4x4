@@ -11,67 +11,57 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.Inet4Address;
-import java.net.UnknownHostException;
 
 public class MainMenu extends Application {
 
     @FXML
-    private Label testText_1;
+    private Label errorLabel;
     @FXML
-    private Label testText_2;
+    private TextField userNameTextField;
     @FXML
-    private Label username_error;
+    private TextField IPTextField;
+
     @FXML
-    private Label ip_error;
-    @FXML
-    private TextField username_textfield;
-    @FXML
-    private TextField ip_textfield;
-    @FXML
-    protected void onHostButtonClick()
-    {
-        testText_1.setText("Host button was clicked!");
-        testText_2.setText("");
+    protected void onHostButtonClick() {
+        System.out.println("Host button has been clicked");
     }
+
     @FXML
-    protected void onJoinButtonClick() throws IOException {
-        testText_2.setText("Join button was clicked!");
-        testText_1.setText("");
-        String username=username_textfield.getText();
-        if(username.equals(""))
-        {
-            username_error.setText("Username can't be empty!");
+    protected void onJoinButtonClick() {
+        errorLabel.setText("");
+
+        if(userNameTextField.getText().equals("")) {
+            errorLabel.setText("Username can't be empty!");
         }
-        else
-        {
-            System.out.println(username);
-            username_error.setText("");
-
-            String ip=ip_textfield.getText();
-            if(ip.equals(""))
-            {
-                ip_error.setText("IP can't be empty!");
+        else {
+            if(IPTextField.getText().equals("")) {
+                errorLabel.setText("IP can't be empty!");
             }
-            else
-            {
-                System.out.println(ip);
+            else {
+                try {
+                    String username= userNameTextField.getText();
+                    Inet4Address ipAddress= (Inet4Address) Inet4Address.getByName(IPTextField.getText());
 
-                Client client = new Client(username, (Inet4Address) Inet4Address.getByName(ip));
-                ip_error.setText("Connected");
-                client.closeConnection();
+                    Client client = new Client(username, ipAddress);
+                    System.out.println("Connected");
+                } catch(IOException err) {
+                    errorLabel.setText("Something is wrong with IP");
+                }
             }
         }
     }
-    public void onExitButtonClick()
-    {
+
+    public void onExitButtonClick() {
         Platform.exit();
         System.exit(0);
     }
+
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainMenu.class.getResource("main-menu.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1200, 800);
-        stage.setTitle("Battleship_4x4");
+        stage.setTitle("Battleship 4x4");
+        stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
     }

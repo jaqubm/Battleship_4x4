@@ -14,7 +14,7 @@ public class Client {
     private DataInputStream input = null;
     private DataOutputStream output = null;
 
-    Client(String name, Inet4Address addressIP) {
+    Client(String name, Inet4Address addressIP) throws IOException {
         try {
             socket = new Socket(addressIP, 5000);
             System.out.println("Connected");
@@ -25,6 +25,7 @@ public class Client {
             this.name = name;
             sendData(this.name);
         } catch (IOException err) {
+            closeConnection();
             err.printStackTrace();
         }
     }
