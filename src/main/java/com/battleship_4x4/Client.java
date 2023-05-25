@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.Socket;
 
+/**
+ * Client Class to take care of communication with Server and implementing game logic
+ */
 public class Client implements Runnable {
 
     private int clientID;
@@ -19,6 +22,13 @@ public class Client implements Runnable {
 
     private MainMenu mainMenu;
 
+    /**
+     * Constructor of Client Class creating connection with Server and DataStreams to contact with it
+     * @param name String containing clientName
+     * @param addressIP Inet4Address containing IP address to which it will try to connect
+     * @param mainMenu MainMenu Class object to control and/or call functions from this class
+     * @throws IOException Error
+     */
     Client(String name, Inet4Address addressIP, MainMenu mainMenu) throws IOException {
         try {
             this.socket = new Socket(addressIP, 5000);
@@ -27,7 +37,7 @@ public class Client implements Runnable {
             this.output = new DataOutputStream(socket.getOutputStream());
             this.clientName = name;
 
-            sendData(this.clientName);
+            this.output.writeUTF(this.clientName);
             this.clientID = getData();
 
             System.out.println("Player ID: " + clientID);
@@ -43,6 +53,10 @@ public class Client implements Runnable {
         }
     }
 
+    /**
+     * Function closing connection with Server
+     * @throws IOException Error
+     */
     public void closeConnection() throws IOException {
         input.close();
         output.close();
@@ -50,14 +64,27 @@ public class Client implements Runnable {
         socket.close();
     }
 
-    public void sendData(String data) throws IOException {
-        output.writeUTF(data);
+    /**
+     * Function to send message to Server
+     * @param data Integer that will be sent to Server
+     * @throws IOException Error
+     */
+    public void sendData(int data) throws IOException {
+        output.writeInt(data);
     }
 
+    /**
+     * Function to read message from Server
+     * @return Integer sent by Server
+     * @throws IOException Error
+     */
     public int getData() throws IOException {
         return input.readInt();
     }
 
+    /**
+     * Main game loop on the Client side
+     */
     @Override
     public void run() {
         while(true) {
@@ -66,6 +93,8 @@ public class Client implements Runnable {
                 int playerID = getData();
                 int posID = getData();
 
+                //Change IF statements for SWITCH!
+                //Implement another stages of game HERE!
                 if(gameID == 0) {
                     Platform.runLater(() -> mainMenu.updateConnectedPlayers(playerID, posID));
                 }

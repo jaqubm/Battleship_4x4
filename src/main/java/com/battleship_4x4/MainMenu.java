@@ -13,6 +13,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.Inet4Address;
 
+/**
+ * MainMenu Class is main-menu.fxml controller
+ */
 public class MainMenu extends Application {
 
     @FXML
@@ -33,18 +36,9 @@ public class MainMenu extends Application {
     @FXML
     private TextField IPTextField;
 
-    @FXML
-    public void onHostButtonClick() {
-        Platform.runLater(() -> {
-            try {
-                new Server().start(new Stage());
-            } catch (IOException err) {
-                throw new RuntimeException(err);
-            }
-        });
-    }
-
-    @FXML
+    /**
+     * Function checking if TextFields aren't empty and calling Client constructor
+     */
     public void onJoinButtonClick() {
         errorLabel.setText("");
 
@@ -60,7 +54,7 @@ public class MainMenu extends Application {
                     String username= userNameTextField.getText();
                     Inet4Address ipAddress= (Inet4Address) Inet4Address.getByName(IPTextField.getText());
 
-                    Client client = new Client(username, ipAddress, this);
+                    new Client(username, ipAddress, this);
                     System.out.println("Connected");
                 } catch(IOException err) {
                     errorLabel.setText("Something is wrong with IP");
@@ -69,20 +63,49 @@ public class MainMenu extends Application {
         }
     }
 
+    /**
+     * Function launching Server app
+     */
+    public void onHostButtonClick() {
+        Platform.runLater(() -> {
+            try {
+                new Server().start(new Stage());
+            } catch (IOException err) {
+                throw new RuntimeException(err);
+            }
+        });
+    }
+
+    /**
+     * Function to close this app
+     */
     public void onExitButtonClick() {
         Platform.exit();
         System.exit(0);
     }
 
+    /**
+     * Function updating the number of connected players to the Server
+     * @param playersConnected Integer telling how much players are connected to the Server
+     * @param maxPlayers Integer telling what is maximum player number on the Server
+     */
     public void updateConnectedPlayers(int playersConnected, int maxPlayers) {
         playersConnectedLabel.setText(playersConnected + "/" + maxPlayers + " players connected");
     }
 
+    /**
+     * Changing currently visible state of MainMenu
+     */
     public void switchToWaitingForPlayers() {
         mainMenu.setVisible(false);
         waitingForPlayers.setVisible(true);
     }
 
+    /**
+     * Launching Java FX app
+     * @param stage Stage
+     * @throws IOException Error
+     */
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainMenu.class.getResource("main-menu.fxml"));
@@ -93,6 +116,10 @@ public class MainMenu extends Application {
         stage.show();
     }
 
+    /**
+     * Closing Java FX app
+     * @throws IOException Error
+     */
     @Override
     public void stop() throws IOException {
         System.out.println("Closing Client");
