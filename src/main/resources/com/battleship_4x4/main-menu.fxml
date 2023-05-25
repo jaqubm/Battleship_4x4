@@ -6,10 +6,11 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" prefHeight="800.0" prefWidth="1200.0" spacing="20.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.battleship_4x4.MainMenu">
+<VBox alignment="CENTER" maxHeight="800.0" prefHeight="800.0" prefWidth="1200.0" spacing="20.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.battleship_4x4.MainMenu">
   <padding>
     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
   </padding>
@@ -18,32 +19,57 @@
          <Image url="@sprites/UI/logotype_480.png" />
       </image>
    </ImageView>
-   <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="18.0" prefWidth="508.0" text="Enter username:">
-      <font>
-         <Font size="24.0" />
-      </font>
-   </Label>
-   <TextField fx:id="userNameTextField" alignment="CENTER" maxWidth="240.0" prefHeight="26.0" prefWidth="320.0" />
-   <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="18.0" prefWidth="510.0" text="Enter server IP:">
-      <font>
-         <Font size="24.0" />
-      </font>
-   </Label>
-   <TextField fx:id="IPTextField" alignment="CENTER" maxWidth="240.0" />
-   <Button maxWidth="140.0" mnemonicParsing="false" onAction="#onJoinButtonClick" prefHeight="34.0" prefWidth="512.0" text="Join">
-      <font>
-         <Font name="System Bold" size="24.0" />
-      </font>
-   </Button>
-  <Button maxWidth="140.0" mnemonicParsing="false" onAction="#onHostButtonClick" prefHeight="34.0" prefWidth="512.0" text="Host">
-      <font>
-         <Font name="System Bold" size="24.0" />
-      </font>
-   </Button>
-   <Button maxWidth="140.0" mnemonicParsing="false" onAction="#onExitButtonClick" prefHeight="34.0" prefWidth="512.0" text="Exit">
-      <font>
-         <Font size="18.0" />
-      </font>
-   </Button>
-   <Label fx:id="errorLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="58.0" prefWidth="310.0" textAlignment="CENTER" textFill="RED" />
+   <AnchorPane prefHeight="405.0" prefWidth="1160.0">
+      <children>
+         <AnchorPane fx:id="waitingForPlayers" prefHeight="360.0" prefWidth="1160.0" visible="false">
+            <children>
+               <Label layoutX="381.0" layoutY="115.0" text="Waiting for players">
+                  <font>
+                     <Font name="System Bold" size="44.0" />
+                  </font>
+               </Label>
+            </children>
+         </AnchorPane>
+         <AnchorPane fx:id="mainMenu" prefHeight="360.0" prefWidth="1160.0">
+            <children>
+               <Label alignment="CENTER" contentDisplay="CENTER" layoutX="326.0" layoutY="14.0" prefHeight="18.0" prefWidth="508.0" text="Enter username:">
+                  <font>
+                     <Font size="24.0" />
+                  </font>
+               </Label>
+               <TextField fx:id="userNameTextField" alignment="CENTER" layoutX="460.0" layoutY="49.0" maxWidth="240.0" prefHeight="26.0" prefWidth="240.0">
+                  <font>
+                     <Font size="18.0" />
+                  </font>
+               </TextField>
+               <Label alignment="CENTER" contentDisplay="CENTER" layoutX="325.0" layoutY="88.0" prefHeight="18.0" prefWidth="510.0" text="Enter server IP:">
+                  <font>
+                     <Font size="24.0" />
+                  </font>
+               </Label>
+               <TextField fx:id="IPTextField" alignment="CENTER" layoutX="460.0" layoutY="123.0" maxWidth="240.0" prefWidth="240.0">
+                  <font>
+                     <Font size="18.0" />
+                  </font>
+               </TextField>
+               <Button layoutX="511.0" layoutY="189.0" maxWidth="140.0" mnemonicParsing="false" onAction="#onJoinButtonClick" prefHeight="34.0" prefWidth="512.0" text="Join">
+                  <font>
+                     <Font name="System Bold" size="24.0" />
+                  </font>
+               </Button>
+              <Button layoutX="510.0" layoutY="254.0" maxWidth="140.0" mnemonicParsing="false" onAction="#onHostButtonClick" prefHeight="34.0" prefWidth="512.0" text="Host">
+                  <font>
+                     <Font name="System Bold" size="24.0" />
+                  </font>
+               </Button>
+               <Button layoutX="511.0" layoutY="315.0" maxWidth="140.0" mnemonicParsing="false" onAction="#onExitButtonClick" prefHeight="34.0" prefWidth="512.0" text="Exit">
+                  <font>
+                     <Font size="18.0" />
+                  </font>
+               </Button>
+               <Label fx:id="errorLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="425.0" layoutY="305.0" prefHeight="58.0" prefWidth="310.0" textAlignment="CENTER" textFill="RED" />
+            </children>
+         </AnchorPane>
+      </children>
+   </AnchorPane>
 </VBox>

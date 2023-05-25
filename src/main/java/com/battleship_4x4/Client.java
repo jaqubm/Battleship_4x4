@@ -17,7 +17,6 @@ public class Client {
     Client(String name, Inet4Address addressIP) throws IOException {
         try {
             socket = new Socket(addressIP, 5000);
-            System.out.println("Connected");
 
             input = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
             output = new DataOutputStream(socket.getOutputStream());

@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -15,9 +16,17 @@ import java.net.Inet4Address;
 public class MainMenu extends Application {
 
     @FXML
+    private AnchorPane waitingForPlayers;
+
+    @FXML
+    private AnchorPane mainMenu;
+
+    @FXML
     private Label errorLabel;
+
     @FXML
     private TextField userNameTextField;
+
     @FXML
     private TextField IPTextField;
 
@@ -44,6 +53,9 @@ public class MainMenu extends Application {
 
                     Client client = new Client(username, ipAddress);
                     System.out.println("Connected");
+
+                    mainMenu.setVisible(false);
+                    waitingForPlayers.setVisible(true);
                 } catch(IOException err) {
                     errorLabel.setText("Something is wrong with IP");
                 }
