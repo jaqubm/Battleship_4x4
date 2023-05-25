@@ -19,6 +19,9 @@ public class MainMenu extends Application {
     private AnchorPane waitingForPlayers;
 
     @FXML
+    private Label playersConnectedLabel;
+
+    @FXML
     private AnchorPane mainMenu;
 
     @FXML
@@ -51,11 +54,8 @@ public class MainMenu extends Application {
                     String username= userNameTextField.getText();
                     Inet4Address ipAddress= (Inet4Address) Inet4Address.getByName(IPTextField.getText());
 
-                    Client client = new Client(username, ipAddress);
+                    Client client = new Client(username, ipAddress, this);
                     System.out.println("Connected");
-
-                    mainMenu.setVisible(false);
-                    waitingForPlayers.setVisible(true);
                 } catch(IOException err) {
                     errorLabel.setText("Something is wrong with IP");
                 }
@@ -68,6 +68,15 @@ public class MainMenu extends Application {
         System.exit(0);
     }
 
+    public void updateConnectedPlayers(int playersConnected, int maxPlayers) {
+        playersConnectedLabel.setText(playersConnected + "/" + maxPlayers + " players connected");
+    }
+
+    public void switchToWaitingForPlayers() {
+        mainMenu.setVisible(false);
+        waitingForPlayers.setVisible(true);
+    }
+
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainMenu.class.getResource("main-menu.fxml"));
@@ -76,6 +85,14 @@ public class MainMenu extends Application {
         stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
+    }
+
+    @Override
+    public void stop() throws IOException {
+        System.out.println("Closing Client");
+
+        Platform.exit();
+        System.exit(0);
     }
 
     public static void main(String[] args) {

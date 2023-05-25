@@ -21,15 +21,6 @@
    </ImageView>
    <AnchorPane prefHeight="405.0" prefWidth="1160.0">
       <children>
-         <AnchorPane fx:id="waitingForPlayers" prefHeight="360.0" prefWidth="1160.0" visible="false">
-            <children>
-               <Label layoutX="381.0" layoutY="115.0" text="Waiting for players">
-                  <font>
-                     <Font name="System Bold" size="44.0" />
-                  </font>
-               </Label>
-            </children>
-         </AnchorPane>
          <AnchorPane fx:id="mainMenu" prefHeight="360.0" prefWidth="1160.0">
             <children>
                <Label alignment="CENTER" contentDisplay="CENTER" layoutX="326.0" layoutY="14.0" prefHeight="18.0" prefWidth="508.0" text="Enter username:">
@@ -68,6 +59,20 @@
                   </font>
                </Button>
                <Label fx:id="errorLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="425.0" layoutY="305.0" prefHeight="58.0" prefWidth="310.0" textAlignment="CENTER" textFill="RED" />
+            </children>
+         </AnchorPane>
+         <AnchorPane fx:id="waitingForPlayers" prefHeight="360.0" prefWidth="1160.0" visible="false">
+            <children>
+               <Label layoutX="381.0" layoutY="115.0" text="Waiting for players">
+                  <font>
+                     <Font name="System Bold" size="44.0" />
+                  </font>
+               </Label>
+               <Label fx:id="playersConnectedLabel" alignment="CENTER" layoutX="420.0" layoutY="180.0" prefWidth="320.0">
+                  <font>
+                     <Font name="System Bold" size="24.0" />
+                  </font>
+               </Label>
             </children>
          </AnchorPane>
       </children>

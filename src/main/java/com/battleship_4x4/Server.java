@@ -29,11 +29,11 @@ class ServerBackend {
     private final ArrayList<DataOutputStream> clientOutput;
 
     public ServerBackend(int port, int players, Inet4Address IP) throws IOException {
-        server = new ServerSocket(port, players, IP);
-        client = new ArrayList<>();
-        clientName = new ArrayList<>();
-        clientInput = new ArrayList<>();
-        clientOutput = new ArrayList<>();
+        this.server = new ServerSocket(port, players, IP);
+        this.client = new ArrayList<>();
+        this.clientName = new ArrayList<>();
+        this.clientInput = new ArrayList<>();
+        this.clientOutput = new ArrayList<>();
         System.out.println("Server is ON!");
     }
 
@@ -42,10 +42,28 @@ class ServerBackend {
         clientInput.add(id, new DataInputStream(new BufferedInputStream(client.get(id).getInputStream())));
         clientOutput.add(id, new DataOutputStream(client.get(id).getOutputStream()));
         clientName.add(id, clientInput.get(id).readUTF());
+        clientOutput.get(id).writeInt(id);
+    }
+
+    public void sendData(int id, int data) throws IOException {
+        clientOutput.get(id).writeInt(data);
+    }
+
+    public int getData(int id, int data) throws IOException {
+        return clientInput.get(id).readInt();
     }
 
     public String getClientName(int id) {
         return clientName.get(id);
+    }
+
+    public void closeServer() throws IOException {
+        for(int i=0; i<client.size(); i++) {
+            clientInput.get(i).close();
+            clientOutput.get(i).close();
+            client.get(i).close();
+        }
+        server.close();
     }
 }
 
@@ -117,6 +135,16 @@ public class Server extends Application implements Runnable{
         stage.show();
     }
 
+    @Override
+    public void stop() throws IOException {
+        System.out.println("Closing Server");
+
+        server.closeServer();
+
+        Platform.exit();
+        System.exit(0);
+    }
+
     public static void main(String[] args) {
         launch();
     }
@@ -126,9 +154,14 @@ public class Server extends Application implements Runnable{
         while (playersConnected != 4) {
             try {
                 server.establishingConnection(playersConnected);
-                System.out.println(server.getClientName(playersConnected));
+                System.out.println("Client connected: " + server.getClientName(playersConnected));
                 playersConnected++;
 
+                for(int i=0; i<playersConnected; i++) {
+                    server.sendData(i, 0);
+                    server.sendData(i, playersConnected);
+                    server.sendData(i, MAX_PLAYERS);
+                }
                 Platform.runLater(this::updateConnectedPlayers);
             } catch (IOException err) {
                 throw new RuntimeException(err);
