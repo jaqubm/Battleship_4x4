@@ -12,6 +12,7 @@ import java.net.Socket;
 public class Client implements Runnable {
 
     private int clientID;
+    private String clientName;
     private Socket socket = null;
     private DataInputStream input = null;
     private DataOutputStream output = null;
@@ -24,8 +25,9 @@ public class Client implements Runnable {
 
             this.input = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
             this.output = new DataOutputStream(socket.getOutputStream());
+            this.clientName = name;
 
-            sendData(name);
+            sendData(this.clientName);
             this.clientID = getData();
 
             System.out.println("Player ID: " + clientID);

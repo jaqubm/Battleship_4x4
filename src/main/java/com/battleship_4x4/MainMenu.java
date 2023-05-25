@@ -34,12 +34,18 @@ public class MainMenu extends Application {
     private TextField IPTextField;
 
     @FXML
-    protected void onHostButtonClick() {
-        System.out.println("Host button has been clicked");
+    public void onHostButtonClick() {
+        Platform.runLater(() -> {
+            try {
+                new Server().start(new Stage());
+            } catch (IOException err) {
+                throw new RuntimeException(err);
+            }
+        });
     }
 
     @FXML
-    protected void onJoinButtonClick() {
+    public void onJoinButtonClick() {
         errorLabel.setText("");
 
         if(userNameTextField.getText().equals("")) {
