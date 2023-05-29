@@ -11,6 +11,7 @@ import java.io.IOException;
 
 public class Setup extends Application
 {
+    private final int SHIP_AMOUNT=4;
     public static final int TILE_SIZE = 100;
     public static final int WIDTH = 8;
     public static final int HEIGHT = 8;
@@ -24,6 +25,8 @@ public class Setup extends Application
         Pane root = new Pane();
         root.setPrefSize(WIDTH * TILE_SIZE, HEIGHT * TILE_SIZE);
         root.getChildren().addAll(tileGroup, shipGroup);
+
+        boolean spawned_ships=false;
         for (int y = 0; y < HEIGHT; y++) //renders the grid and sets the pieces
         {
             for (int x = 0; x < WIDTH; x++)
@@ -31,7 +34,11 @@ public class Setup extends Application
                 Tile tile = new Tile((x + y) % 2 == 0, x, y);
                 board[x][y] = tile;
                 tileGroup.getChildren().add(tile);
-                if(x<5 && y<5)
+                if(x==SHIP_AMOUNT)
+                {
+                    spawned_ships=true;
+                }
+                if(!spawned_ships)
                 {
                     Ship ship = makeSegment(x, y);
                     tile.setShip(ship);
