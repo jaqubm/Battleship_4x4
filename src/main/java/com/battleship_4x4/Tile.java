@@ -5,19 +5,19 @@ import javafx.scene.shape.Rectangle;
 import static com.battleship_4x4.Setup.TILE_SIZE;
 public class Tile extends Rectangle
 {
-    private Ship ship;
+    private Segment segment;
 
-    public boolean hasShip()
+    public boolean hasSegment()
     {
-        return ship != null;
+        return segment != null;
     }
-    public Ship getShip()
+    public Segment getSegment()
     {
-        return this.ship;
+        return this.segment;
     }
-    public void setShip(Ship ship)
+    public void setSegment(Segment segment)
     {
-        this.ship = ship;
+        this.segment = segment;
     }
     public Tile(boolean light, int x, int y)
     {
