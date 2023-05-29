@@ -2,7 +2,7 @@ package com.battleship_4x4;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import static com.battleship_4x4.MainMenu.TILE_SIZE;
+import static com.battleship_4x4.Setup.TILE_SIZE;
 public class Tile extends Rectangle
 {
     private Ship ship;

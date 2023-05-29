@@ -4,7 +4,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-import static com.battleship_4x4.MainMenu.TILE_SIZE;
+import static com.battleship_4x4.Setup.TILE_SIZE;
 
 public class Ship extends StackPane {
     //private final ShipType type;
