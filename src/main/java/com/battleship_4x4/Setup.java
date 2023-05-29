@@ -11,7 +11,6 @@ import java.io.IOException;
 
 public class Setup extends Application
 {
-    private final int SHIP_AMOUNT=4;
     public static final int TILE_SIZE = 100;
     public static final int WIDTH = 8;
     public static final int HEIGHT = 8;
@@ -34,7 +33,8 @@ public class Setup extends Application
                 Tile tile = new Tile((x + y) % 2 == 0, x, y);
                 board[x][y] = tile;
                 tileGroup.getChildren().add(tile);
-                if(x==SHIP_AMOUNT)
+                int SHIP_AMOUNT = 4;
+                if(x== SHIP_AMOUNT)
                 {
                     spawned_ships=true;
                 }
