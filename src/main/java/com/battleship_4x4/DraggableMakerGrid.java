@@ -10,6 +10,7 @@ public class DraggableMakerGrid extends GridBase{
 
     private double mouseAnchorX;
     private double mouseAnchorY;
+    private boolean allowRotation = true;
 
     public DraggableMakerGrid(double planeWidth, double planeHeight, int gridSize, AnchorPane anchorPane) {
         super(planeWidth, planeHeight, gridSize, anchorPane);
@@ -21,6 +22,7 @@ public class DraggableMakerGrid extends GridBase{
         node.setOnMousePressed(e -> {
             mouseAnchorX = e.getSceneX();
             mouseAnchorY = e.getSceneY();
+            allowRotation = false;
         });
         node.setOnMouseDragged(e -> {
             node.relocate(e.getSceneX() - mouseAnchorX + ship.getboardX(),
@@ -35,20 +37,24 @@ public class DraggableMakerGrid extends GridBase{
 
             ship.move(newX, newY);
             if (collisionCheck(ship, ships) || !inBoardCheck(ship)) ship.move(x0, y0);
+            allowRotation = true;
         });
 
         node.setOnScroll(e -> {
-            Rotate rotate;
-            if (ship.getDirection()) rotate = new Rotate(-90, 32, 32);
-            else rotate = new Rotate(90, 32, 32);
+            if (allowRotation)
+            {
+                Rotate rotate;
+                if (ship.getDirection()) rotate = new Rotate(-90, 32, 32);
+                else rotate = new Rotate(90, 32, 32);
 
-            ship.setDirection(!ship.getDirection());
-            ship.move(toBoard(node.getLayoutX()),toBoard(node.getLayoutY())); //move w miejscu aby zaktualizować współrzędne statku po obrocie
-
-            if (!collisionCheck(ship, ships) && inBoardCheck(ship)) node.getTransforms().add(rotate);
-            else {
                 ship.setDirection(!ship.getDirection());
-                ship.move(toBoard(node.getLayoutX()),toBoard(node.getLayoutY()));
+                ship.move(toBoard(node.getLayoutX()),toBoard(node.getLayoutY())); //move w miejscu aby zaktualizować współrzędne statku po obrocie
+
+                if (!collisionCheck(ship, ships) && inBoardCheck(ship)) node.getTransforms().add(rotate);
+                else {
+                    ship.setDirection(!ship.getDirection());
+                    ship.move(toBoard(node.getLayoutX()),toBoard(node.getLayoutY()));
+                }
             }
         });
 
