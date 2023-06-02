@@ -1,8 +1,10 @@
 package com.battleship_4x4;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
@@ -48,5 +50,15 @@ public class Controller implements Initializable {
         ship5.move(0, 3);
         boardPane.getChildren().add(ship5.getRectangle());
         draggableMakerGrid.makeDraggable(ship5, ships);
+    }
+
+    public void onReadyButtonClick() {
+        for (Ship tempShip: ships){
+            for (int i = 0; i < tempShip.getSize(); i++)
+            {
+                System.out.println(tempShip.pointList.get(i).getX() + " " + tempShip.pointList.get(i).getY());
+            }
+            System.out.println(" ");
+        }
     }
 }
