@@ -1,22 +1,19 @@
 package com.battleship_4x4;
 
+import javafx.geometry.Point2D;
+import javafx.scene.image.Image;
+import javafx.scene.shape.Rectangle;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Ship
 {
+    private Rectangle rectangle;
+    private double boardX;
+    private double boardY;
+    public List<Point2D> pointList;
     private int size;
-    private int x;
-    private int y;
-    public List<Segment> segmentList=new ArrayList<Segment>();
-    public Ship (int size, int x, int y)
-    {
-        this.size=size;
-        this.x=x;
-        this.y=y;
-        for(int i=0;i<size;i++,y++)
-        {
-            segmentList.add(new Segment(x,y));
-        }
-    }
+    private boolean direction;
+    Image ship2Image = new Image("com.battleship_4x4/sprites/ships/ship_2_64_png");
 }
