@@ -17,6 +17,7 @@ public class Ship
     public List<Point2D> pointList;
     private final int size;
     private boolean direction;
+    private final int GridSize;
     //Image ship2Image = new Image("com/battleship_4x4/sprites/ships/ship_2_64.png");
     //Image ship3Image = new Image("com/battleship_4x4/sprites/ships/ship_3_64.png");
     //Image ship4Image = new Image("com/battleship_4x4/sprites/ships/ship_4_64.png");
@@ -50,11 +51,12 @@ public class Ship
         {
             pointList.add(new Point2D(i,0));
         }
+        this.GridSize = rectangleSize;
     }
 
     public void move (int x, int y) {
-        boardX = x * 64;
-        boardY = y * 64;
+        boardX = x * GridSize;
+        boardY = y * GridSize;
 
         for (int i = 0; i < size; i++)
         {
