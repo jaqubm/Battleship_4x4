@@ -43,22 +43,22 @@
                      <Font size="18.0" />
                   </font>
                </TextField>
-               <Button layoutX="511.0" layoutY="189.0" maxWidth="140.0" mnemonicParsing="false" onAction="#onJoinButtonClick" prefHeight="34.0" prefWidth="512.0" text="Join">
+               <Button layoutX="429.0" layoutY="166.0" maxWidth="140.0" mnemonicParsing="false" onAction="#onJoinButtonClick" prefHeight="34.0" prefWidth="512.0" text="Join" AnchorPane.leftAnchor="429.0">
                   <font>
                      <Font name="System Bold" size="24.0" />
                   </font>
                </Button>
-              <Button layoutX="510.0" layoutY="254.0" maxWidth="140.0" mnemonicParsing="false" onAction="#onHostButtonClick" prefHeight="34.0" prefWidth="512.0" text="Host">
+              <Button layoutX="590.0" layoutY="166.0" maxWidth="140.0" mnemonicParsing="false" onAction="#onHostButtonClick" prefHeight="34.0" prefWidth="512.0" text="Host" AnchorPane.rightAnchor="429.0">
                   <font>
                      <Font name="System Bold" size="24.0" />
                   </font>
                </Button>
-               <Button layoutX="511.0" layoutY="315.0" maxWidth="140.0" mnemonicParsing="false" onAction="#onExitButtonClick" prefHeight="34.0" prefWidth="512.0" text="Exit">
+               <Button layoutX="510.0" layoutY="221.0" maxWidth="140.0" mnemonicParsing="false" onAction="#onExitButtonClick" prefHeight="34.0" prefWidth="512.0" text="Exit">
                   <font>
                      <Font size="18.0" />
                   </font>
                </Button>
-               <Label fx:id="errorLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="425.0" layoutY="305.0" prefHeight="58.0" prefWidth="310.0" textAlignment="CENTER" textFill="RED" />
+               <Label fx:id="errorLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="425.0" layoutY="269.0" prefHeight="58.0" prefWidth="310.0" textAlignment="CENTER" textFill="RED" />
             </children>
          </AnchorPane>
          <AnchorPane fx:id="waitingForPlayers" prefHeight="360.0" prefWidth="1160.0" visible="false">
