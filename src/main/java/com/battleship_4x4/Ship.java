@@ -18,10 +18,10 @@ public class Ship
     private final int size;
     private boolean direction;
     private final int GridSize;
-    //Image ship2Image = new Image("com/battleship_4x4/sprites/ships/ship_2_64.png");
-    //Image ship3Image = new Image("com/battleship_4x4/sprites/ships/ship_3_64.png");
-    //Image ship4Image = new Image("com/battleship_4x4/sprites/ships/ship_4_64.png");
-    //Image ship5Image = new Image("com/battleship_4x4/sprites/ships/ship_5_64.png");
+    Image ship2Image = new Image(this.getClass().getResource("sprites/ships/ship_2_64.png").toString());
+    Image ship3Image = new Image(this.getClass().getResource("sprites/ships/ship_3_64.png").toString());
+    Image ship4Image = new Image(this.getClass().getResource("sprites/ships/ship_4_64.png").toString());
+    Image ship5Image = new Image(this.getClass().getResource("sprites/ships/ship_5_64.png").toString());
 
     public Ship(int rectangleSize, int ship_size) {
 
@@ -29,20 +29,16 @@ public class Ship
         this.direction = true;
         rectangle = new Rectangle(0, 0, rectangleSize * ship_size, rectangleSize); //każdy statek jest tworzony na 0 0, a potem przerzucany na inną pozytcję metodą move
         if (ship_size == 2) {
-            //rectangle.setFill(new ImagePattern(ship2Image));
-            rectangle.setFill(Color.BLACK);
+            rectangle.setFill(new ImagePattern(ship2Image));
         }
         else if (ship_size == 3) {
-            //rectangle.setFill(new ImagePattern(ship3Image));
-            rectangle.setFill(Color.BLACK);
+            rectangle.setFill(new ImagePattern(ship3Image));
         }
         else if (ship_size == 4) {
-            //rectangle.setFill(new ImagePattern(ship4Image));
-            rectangle.setFill(Color.BLACK);
+            rectangle.setFill(new ImagePattern(ship4Image));
         }
         else {
-            //rectangle.setFill(new ImagePattern(ship5Image));
-            rectangle.setFill(Color.BLACK);
+            rectangle.setFill(new ImagePattern(ship5Image));
         }
         this.boardX = 0;
         this.boardY = 0;

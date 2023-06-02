@@ -8,8 +8,8 @@ import javafx.scene.shape.Rectangle;
 
 public class GridHandler extends GridBase {
 
-    //Image waterImage = new Image("com.battleship_4x4/sprites/gifs/water_64.gif");
-    //Image waterDarkerImage = new Image("com.battleship_4x4/sprites/gifs/water_darker_64.gif");
+    Image waterImage = new Image(this.getClass().getResource("sprites/gifs/water_64.gif").toString());
+    Image waterDarkerImage = new Image(this.getClass().getResource("sprites/gifs/water_darker_64.gif").toString());
 
 
     public GridHandler(double planeWidth, double planeHeight, int gridSize, AnchorPane anchorPane) {
@@ -17,8 +17,8 @@ public class GridHandler extends GridBase {
     }
 
     public void createGrid() {
-        //ImagePattern waterImagePattern = new ImagePattern(waterImage);
-        //ImagePattern waterDarkerImagePattern = new ImagePattern(waterDarkerImage);
+        ImagePattern waterImagePattern = new ImagePattern(waterImage);
+        ImagePattern waterDarkerImagePattern = new ImagePattern(waterDarkerImage);
 
         for(int i = 0; i < getTileAmount(); i++){
             int x = (i % getTilesAcross());
@@ -27,11 +27,9 @@ public class GridHandler extends GridBase {
             Rectangle rectangle = new Rectangle(x * getGridSize(),y * getGridSize(),getGridSize(),getGridSize());
 
             if((x + y) % 2 == 0){
-                //rectangle.setFill(waterImagePattern);
-                rectangle.setFill(Color.BLUE);
+                rectangle.setFill(waterImagePattern);
             } else {
-                //rectangle.setFill(waterDarkerImagePattern);
-                rectangle.setFill(Color.WHITESMOKE);
+                rectangle.setFill(waterDarkerImagePattern);
             }
             getAnchorPane().getChildren().add(rectangle);
         }
