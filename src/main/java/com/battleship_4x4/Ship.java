@@ -8,6 +8,7 @@ import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Ship
 {
@@ -18,10 +19,10 @@ public class Ship
     private final int size;
     private boolean direction;
     private final int GridSize;
-    Image ship2Image = new Image(this.getClass().getResource("sprites/ships/ship_2_64.png").toString());
-    Image ship3Image = new Image(this.getClass().getResource("sprites/ships/ship_3_64.png").toString());
-    Image ship4Image = new Image(this.getClass().getResource("sprites/ships/ship_4_64.png").toString());
-    Image ship5Image = new Image(this.getClass().getResource("sprites/ships/ship_5_64.png").toString());
+    Image ship2Image = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/ships/ship_2_64.png")).toString());
+    Image ship3Image = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/ships/ship_3_64.png")).toString());
+    Image ship4Image = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/ships/ship_4_64.png")).toString());
+    Image ship5Image = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/ships/ship_5_64.png")).toString());
 
     public Ship(int rectangleSize, int ship_size) {
 

@@ -2,14 +2,15 @@ package com.battleship_4x4;
 
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
+import java.util.Objects;
+
 public class GridHandler extends GridBase {
 
-    Image waterImage = new Image(this.getClass().getResource("sprites/gifs/water_64.gif").toString());
-    Image waterDarkerImage = new Image(this.getClass().getResource("sprites/gifs/water_darker_64.gif").toString());
+    Image waterImage = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/water_64.gif")).toString());
+    Image waterDarkerImage = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/water_darker_64.gif")).toString());
 
 
     public GridHandler(double planeWidth, double planeHeight, int gridSize, AnchorPane anchorPane) {

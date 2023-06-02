@@ -12,21 +12,18 @@ import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
 
-    private int gridSize = 64;
-
     @FXML
     private AnchorPane boardPane;
-    private GridHandler backgroundGridHandler;
-    private DraggableMakerGrid draggableMakerGrid;
     public List<Ship> ships = new ArrayList<>();
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        draggableMakerGrid = new DraggableMakerGrid(boardPane.getPrefWidth(), boardPane.getPrefHeight(), gridSize, boardPane);
+        int gridSize = 64;
+        DraggableMakerGrid draggableMakerGrid = new DraggableMakerGrid(boardPane.getPrefWidth(), boardPane.getPrefHeight(), gridSize, boardPane);
 
-        backgroundGridHandler = new GridHandler(boardPane.getPrefWidth(), boardPane.getPrefHeight(), gridSize, boardPane);
+        GridHandler backgroundGridHandler = new GridHandler(boardPane.getPrefWidth(), boardPane.getPrefHeight(), gridSize, boardPane);
         backgroundGridHandler.createGrid();
 
         Ship ship2 = new Ship(gridSize, 2);
