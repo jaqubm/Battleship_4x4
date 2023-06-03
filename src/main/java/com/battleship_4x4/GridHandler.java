@@ -1,6 +1,7 @@
 package com.battleship_4x4;
 
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
@@ -33,6 +34,41 @@ public class GridHandler extends GridBase {
                 rectangle.setFill(waterDarkerImagePattern);
             }
             getAnchorPane().getChildren().add(rectangle);
+
+            rectangle.setOnMouseClicked((MouseEvent event) -> {
+                double mouseAnchorX = event.getSceneX();
+                double mouseAnchorY = event.getSceneY();
+                int x2=toBoard(mouseAnchorX);
+                int y2=toBoard(mouseAnchorY);
+
+                if(x2<6&&y2<6) {
+
+                    handleGridClick(y, x,3);
+
+                }else if (x2<14&&y2<6) {
+
+                    handleGridClick(y, x,4);
+
+                } else if (x2<6) {
+
+                    handleGridClick(y, x,1);
+
+                } else {
+
+                    handleGridClick(y, x, 2);
+
+                }
+
+            });
         }
     }
+
+    private int toBoard(double pixel) { //zamiana piksela na współrzędną siatki
+        return (int) (pixel + 64 / 2) / 64;
 }
+    private void handleGridClick(int row, int column,int quarter) {
+        // Logika obsługi kliknięcia w siatkę
+        System.out.println("Clicked cell: row=" + row + ", column=" + column + " quarter" + quarter);
+    }
+}
+

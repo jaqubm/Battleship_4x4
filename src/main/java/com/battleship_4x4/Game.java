@@ -1,18 +1,29 @@
 package com.battleship_4x4;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.paint.ImagePattern;
 import javafx.stage.Stage;
-
+import javafx.scene.shape.Rectangle;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
+
 
 public class Game extends Application implements Initializable {
 
@@ -24,11 +35,24 @@ public class Game extends Application implements Initializable {
     private AnchorPane boardPane3;
     @FXML
     private AnchorPane boardPane4;
+    @FXML
+    private Rectangle timer;
+    @FXML
+    private Rectangle scoreboard;
+    @FXML
+    private Label timeLabel;
     public List<Ship> ships = new ArrayList<>();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        int gridSize = (int)(boardPane1.getPrefWidth() / 8);
+        Image scoreboardImage = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/UI/scoreboard_480.png")).toString());
+        Image timerImage = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/timer_64.gif")).toString());
+        ImagePattern scoreboardImagePattern = new ImagePattern(scoreboardImage);
+        ImagePattern timerImagePattern = new ImagePattern(timerImage);
+        scoreboard.setFill(scoreboardImagePattern);
+        timer.setFill(timerImagePattern);
+
+        int gridSize = (int) (boardPane1.getPrefWidth() / 8);
 
         GridHandler backgroundGrid_1 = new GridHandler(boardPane1.getPrefWidth(), boardPane1.getPrefHeight(), gridSize, boardPane1);
         GridHandler backgroundGrid_2 = new GridHandler(boardPane2.getPrefWidth(), boardPane2.getPrefHeight(), gridSize, boardPane2);
@@ -58,11 +82,12 @@ public class Game extends Application implements Initializable {
         ships.add(ship5);
         ship5.move(0, 3);
         boardPane1.getChildren().add(ship5.getRectangle());
+
     }
 
+
     @Override
-    public void start(Stage stage) throws IOException
-    {
+    public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Setup.class.getResource("game.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1200, 800);
         stage.setTitle("Setup");
@@ -75,3 +100,4 @@ public class Game extends Application implements Initializable {
         launch();
     }
 }
+
