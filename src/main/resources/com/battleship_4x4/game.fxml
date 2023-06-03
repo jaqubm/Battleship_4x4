@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="800.0" maxWidth="1200.0" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.battleship_4x4.Game">
+   <children>
+      <AnchorPane fx:id="boardPane_1" layoutX="0.0" layoutY="350.0" maxHeight="350.0" maxWidth="350.0" prefHeight="350.0" prefWidth="350.0" />
+      <AnchorPane fx:id="boardPane_4" layoutX="350.0" layoutY="0.0" maxHeight="350.0" maxWidth="350.0" prefHeight="350.0" prefWidth="350.0" />
+       <AnchorPane fx:id="boardPane_2" layoutX="350.0" layoutY="350.0" maxHeight="350.0" maxWidth="350.0" prefHeight="350.0" prefWidth="350.0" />
+      <AnchorPane fx:id="boardPane_3" layoutX="0" layoutY="0" maxHeight="350.0" maxWidth="350.0" prefHeight="350.0" prefWidth="350.0"  />
+   </children>
+</AnchorPane>
