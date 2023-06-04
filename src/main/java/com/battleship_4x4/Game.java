@@ -1,19 +1,13 @@
 package com.battleship_4x4;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.stage.Stage;
 import javafx.scene.shape.Rectangle;
@@ -23,6 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
 
 
 public class Game extends Application implements Initializable {
@@ -41,6 +39,8 @@ public class Game extends Application implements Initializable {
     private Rectangle scoreboard;
     @FXML
     private Label timeLabel;
+    private long timeLimit;
+    Timeline timeline;
     public List<Ship> ships = new ArrayList<>();
 
     @Override
@@ -83,21 +83,45 @@ public class Game extends Application implements Initializable {
         ship5.move(0, 3);
         boardPane1.getChildren().add(ship5.getRectangle());
 
+        timeLimit = 70;
+        updateTimerLabel(timeLimit);
+
+         timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+            updateTimerLabel(70);
+        }));
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
     }
 
 
+    private void updateTimerLabel(long limit) {
+        timeLimit=timeLimit-1;
+
+        long minutes = timeLimit / 60;
+        long seconds = timeLimit % 60;
+        String time = String.format("%02d:%02d", minutes, seconds);
+        timeLabel.setText(time);;
+
+        if(timeLimit==0){
+            System.out.println("Counting ends");
+            timeline.stop();
+        }
+    }
+
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Setup.class.getResource("game.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Game.class.getResource("game.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1200, 800);
-        stage.setTitle("Setup");
+        stage.setTitle("Battleship4x4");
         stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
+
     }
 
     public static void main(String[] args) {
         launch();
+
     }
 }
 

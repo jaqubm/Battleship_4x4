@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
-
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <AnchorPane maxHeight="800.0" maxWidth="1200.0" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.battleship_4x4.Game">
    <children>
+      <ImageView fitWidth="1200.0" fitHeight="800.0">
+         <image>
+            <Image url="sprites/UI/button_480.png" />
+         </image>
+      </ImageView>
       <AnchorPane fx:id="boardPane1" layoutX="0.0" layoutY="350.0" maxHeight="350.0" maxWidth="350.0" prefHeight="350.0" prefWidth="350.0" />
-       <AnchorPane fx:id="boardPane2" layoutX="350.0" layoutY="350.0" maxHeight="350.0" maxWidth="350.0" prefHeight="350.0" prefWidth="350.0" />
+      <AnchorPane fx:id="boardPane2" layoutX="350.0" layoutY="350.0" maxHeight="350.0" maxWidth="350.0" prefHeight="350.0" prefWidth="350.0" />
       <AnchorPane fx:id="boardPane3" layoutX="0" layoutY="0" maxHeight="350.0" maxWidth="350.0" prefHeight="350.0" prefWidth="350.0" />
       <AnchorPane fx:id="boardPane4" layoutX="350.0" maxHeight="350.0" maxWidth="350.0" prefHeight="350.0" prefWidth="350.0" />
-      <Rectangle fx:id="timer" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="96.0" layoutX="900.0" layoutY="560.0" stroke="BLACK" strokeType="INSIDE" width="128.0" />
-      <Rectangle fx:id="scoreboard" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="480.0" layoutX="841.0" layoutY="7.0" stroke="BLACK" strokeType="INSIDE" width="240.0" />
-      <Label fx:id="timeLabel" layoutX="930.0" layoutY="600.0" text="00:00">
+      <Rectangle fx:id="timer" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="96.0" layoutX="900.0" layoutY="560.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="128.0" />
+      <Rectangle fx:id="scoreboard" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="480.0" layoutX="841.0" layoutY="7.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="240.0" />
+      <Label fx:id="timeLabel" layoutX="935.0" layoutY="595.0" text="00:00">
          <font>
             <Font size="19.0" />
          </font>
