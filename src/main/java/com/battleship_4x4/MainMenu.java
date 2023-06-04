@@ -2,9 +2,12 @@ package com.battleship_4x4;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -13,13 +16,12 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.Inet4Address;
+import java.util.Objects;
 
 /**
  * MainMenu Class is main-menu.fxml controller
  */
-public class MainMenu extends Application
-{
-
+public class MainMenu extends Application {
 
     @FXML
     private AnchorPane waitingForPlayers;
@@ -42,7 +44,7 @@ public class MainMenu extends Application
     /**
      * Function checking if TextFields aren't empty and calling Client constructor
      */
-    public void onJoinButtonClick() {
+    public void onJoinButtonClick(ActionEvent event) {
         errorLabel.setText("");
 
         if(userNameTextField.getText().equals("")) {
@@ -57,7 +59,7 @@ public class MainMenu extends Application
                     String username= userNameTextField.getText();
                     Inet4Address ipAddress= (Inet4Address) Inet4Address.getByName(IPTextField.getText());
 
-                    new Client(username, ipAddress, this);
+                    new Client(username, ipAddress, this, event);
                     System.out.println("Connected");
                 } catch(IOException err) {
                     errorLabel.setText("Something is wrong with IP");
@@ -102,6 +104,14 @@ public class MainMenu extends Application
     public void switchToWaitingForPlayers() {
         mainMenu.setVisible(false);
         waitingForPlayers.setVisible(true);
+    }
+
+    public void switchToSetup(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("setup.fxml")));
+        Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
     /**

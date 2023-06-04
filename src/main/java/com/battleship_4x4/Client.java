@@ -1,6 +1,8 @@
 package com.battleship_4x4;
 
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.stage.Stage;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
@@ -20,7 +22,9 @@ public class Client implements Runnable {
     private DataInputStream input = null;
     private DataOutputStream output = null;
 
+    ActionEvent event;
     private MainMenu mainMenu;
+    private Controller shipSetup;
 
     /**
      * Constructor of Client Class creating connection with Server and DataStreams to contact with it
@@ -29,7 +33,7 @@ public class Client implements Runnable {
      * @param mainMenu MainMenu Class object to control and/or call functions from this class
      * @throws IOException Error
      */
-    Client(String name, Inet4Address addressIP, MainMenu mainMenu) throws IOException {
+    Client(String name, Inet4Address addressIP, MainMenu mainMenu, ActionEvent event) throws IOException {
         try {
             this.socket = new Socket(addressIP, 5000);
 
@@ -42,8 +46,12 @@ public class Client implements Runnable {
 
             System.out.println("Player ID: " + clientID);
 
+            this.event = event;
+
             this.mainMenu = mainMenu;
-            this.mainMenu.switchToWaitingForPlayers();
+            mainMenu.switchToWaitingForPlayers();
+
+            shipSetup = new Controller();
 
             Thread clientThread = new Thread(this);
             clientThread.start();
@@ -93,10 +101,18 @@ public class Client implements Runnable {
                 int playerID = getData();
                 int posID = getData();
 
-                //Change IF statements for SWITCH!
-                //Implement another stages of game HERE!
                 if(gameID == 0) {
                     Platform.runLater(() -> mainMenu.updateConnectedPlayers(playerID, posID));
+                }
+                else if(gameID == 1) {
+                    Platform.runLater(() -> {
+                        try {
+                            mainMenu.switchToSetup(event);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                    break;
                 }
             } catch (IOException err) {
                 try {

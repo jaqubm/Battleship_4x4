@@ -1,13 +1,21 @@
 package com.battleship_4x4;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
@@ -15,7 +23,6 @@ public class Controller implements Initializable {
     @FXML
     private AnchorPane boardPane;
     public List<Ship> ships = new ArrayList<>();
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -50,13 +57,19 @@ public class Controller implements Initializable {
         draggableMakerGrid.makeDraggable(ship5, ships);
     }
 
-    public void onReadyButtonClick() {
+    public void onReadyButtonClick(ActionEvent event) throws IOException {
         for (Ship tempShip: ships){
-            for (int i = 0; i < tempShip.getSize(); i++)
-            {
-                System.out.println(tempShip.pointList.get(i).getX() + " " + tempShip.pointList.get(i).getY());
+            for (int i = 0; i < tempShip.getSize(); i++) {
+                int id = (int) ((tempShip.pointList.get(i).getY() * 8) + tempShip.pointList.get(i).getX());
+                System.out.println("ID: " + id);
             }
             System.out.println(" ");
         }
+
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("game.fxml")));
+        Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 }

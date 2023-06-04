@@ -223,6 +223,15 @@ public class Server extends Application implements Runnable{
             }
         }
 
-        //Implement another stages of game HERE!
+        for(int i=0; i<MAX_PLAYERS; i++) {
+            try {
+                server.sendData(i ,1);
+                server.sendData(i, playersConnected);
+                server.sendData(i, MAX_PLAYERS);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
     }
 }
