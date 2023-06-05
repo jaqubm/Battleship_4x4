@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicLong;
+
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -39,7 +41,6 @@ public class Game extends Application implements Initializable {
     private Rectangle scoreboard;
     @FXML
     private Label timeLabel;
-    private long timeLimit;
     Timeline timeline;
     public List<Ship> ships = new ArrayList<>();
 
@@ -47,10 +48,13 @@ public class Game extends Application implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Image scoreboardImage = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/UI/scoreboard_480.png")).toString());
         Image timerImage = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/timer_64.gif")).toString());
+
         ImagePattern scoreboardImagePattern = new ImagePattern(scoreboardImage);
         ImagePattern timerImagePattern = new ImagePattern(timerImage);
+
         scoreboard.setFill(scoreboardImagePattern);
         timer.setFill(timerImagePattern);
+
 
         int gridSize = (int) (boardPane1.getPrefWidth() / 8);
 
@@ -83,29 +87,34 @@ public class Game extends Application implements Initializable {
         ship5.move(0, 3);
         boardPane1.getChildren().add(ship5.getRectangle());
 
-        timeLimit = 5000;
-        updateTimerLabel(timeLimit);
 
-         timeline = new Timeline(new KeyFrame(Duration.millis(1), event -> {
-            updateTimerLabel(70);
+       timer();
+    }
+    private void timer(){
+         AtomicLong timeLimit= new AtomicLong(5000);
+        updateTimerLabel(timeLimit.get());
+
+        timeline = new Timeline(new KeyFrame(Duration.millis(1), event -> {
+            timeLimit.set(updateTimerLabel(timeLimit.get()));
+
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
     }
 
-
-    private void updateTimerLabel(long limit) {
+    private long updateTimerLabel(long timeLimit) {
         timeLimit=timeLimit-1;
 
-        long seconds = timeLimit / 1000;
-        long mills = timeLimit % 100;
-        String time = String.format("%02d:%02d", seconds, mills);
+        long second = timeLimit / 1000;
+        long millsecond = timeLimit % 100;
+        String time = String.format("%02d:%02d", second, millsecond);
         timeLabel.setText(time);;
 
         if(timeLimit==0){
             System.out.println("Counting ends");
             timeline.stop();
         }
+        return timeLimit;
     }
 
     @Override
