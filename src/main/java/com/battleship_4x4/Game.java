@@ -83,10 +83,10 @@ public class Game extends Application implements Initializable {
         ship5.move(0, 3);
         boardPane1.getChildren().add(ship5.getRectangle());
 
-        timeLimit = 70;
+        timeLimit = 5000;
         updateTimerLabel(timeLimit);
 
-         timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+         timeline = new Timeline(new KeyFrame(Duration.millis(1), event -> {
             updateTimerLabel(70);
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
@@ -97,9 +97,9 @@ public class Game extends Application implements Initializable {
     private void updateTimerLabel(long limit) {
         timeLimit=timeLimit-1;
 
-        long minutes = timeLimit / 60;
-        long seconds = timeLimit % 60;
-        String time = String.format("%02d:%02d", minutes, seconds);
+        long seconds = timeLimit / 1000;
+        long mills = timeLimit % 100;
+        String time = String.format("%02d:%02d", seconds, mills);
         timeLabel.setText(time);;
 
         if(timeLimit==0){
