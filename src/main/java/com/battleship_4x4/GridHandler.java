@@ -12,13 +12,14 @@ public class GridHandler extends GridBase {
 
     Image waterImage = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/water_64.gif")).toString());
     Image waterDarkerImage = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/water_darker_64.gif")).toString());
-
+    private int quarter;
 
     public GridHandler(double planeWidth, double planeHeight, int gridSize, AnchorPane anchorPane) {
         super(planeWidth, planeHeight, gridSize, anchorPane);
     }
 
-    public void createGrid() {
+    public void createGrid(int quarter) {
+        this.quarter = quarter;
         ImagePattern waterImagePattern = new ImagePattern(waterImage);
         ImagePattern waterDarkerImagePattern = new ImagePattern(waterDarkerImage);
 
@@ -36,28 +37,8 @@ public class GridHandler extends GridBase {
             getAnchorPane().getChildren().add(rectangle);
 
             rectangle.setOnMouseClicked((MouseEvent event) -> {
-                double mouseAnchorX = event.getSceneX();
-                double mouseAnchorY = event.getSceneY();
-                int x2=toBoard(mouseAnchorX);
-                int y2=toBoard(mouseAnchorY);
 
-                if(x2<6&&y2<6) {
-
-                    handleGridClick(y, x,3);
-
-                }else if (x2<14&&y2<6) {
-
-                    handleGridClick(y, x,4);
-
-                } else if (x2<6) {
-
-                    handleGridClick(y, x,1);
-
-                } else {
-
-                    handleGridClick(y, x, 2);
-
-                }
+                handleGridClick(y, x,quarter);
 
             });
         }

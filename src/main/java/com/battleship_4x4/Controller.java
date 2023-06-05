@@ -31,7 +31,7 @@ public class Controller implements Initializable {
         DraggableMakerGrid draggableMakerGrid = new DraggableMakerGrid(boardPane.getPrefWidth(), boardPane.getPrefHeight(), gridSize, boardPane);
 
         GridHandler backgroundGridHandler = new GridHandler(boardPane.getPrefWidth(), boardPane.getPrefHeight(), gridSize, boardPane);
-        backgroundGridHandler.createGrid();
+        backgroundGridHandler.createGrid(0);
 
         Ship ship2 = new Ship(gridSize, 2);
         ships.add(ship2);

@@ -59,10 +59,10 @@ public class Game extends Application implements Initializable {
         GridHandler backgroundGrid_3 = new GridHandler(boardPane3.getPrefWidth(), boardPane3.getPrefHeight(), gridSize, boardPane3);
         GridHandler backgroundGrid_4 = new GridHandler(boardPane4.getPrefWidth(), boardPane4.getPrefHeight(), gridSize, boardPane4);
 
-        backgroundGrid_1.createGrid();
-        backgroundGrid_2.createGrid();
-        backgroundGrid_3.createGrid();
-        backgroundGrid_4.createGrid();
+        backgroundGrid_1.createGrid(1);
+        backgroundGrid_2.createGrid(2);
+        backgroundGrid_3.createGrid(3);
+        backgroundGrid_4.createGrid(4);
 
         Ship ship2 = new Ship(gridSize, 2);
         ships.add(ship2);
