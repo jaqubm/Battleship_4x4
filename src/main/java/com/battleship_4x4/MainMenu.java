@@ -21,7 +21,11 @@ import java.util.Objects;
 /**
  * MainMenu Class is main-menu.fxml controller
  */
-public class MainMenu extends Application {
+public class MainMenu extends Application implements Runnable {
+
+    Client client;
+
+    ActionEvent event;
 
     @FXML
     private AnchorPane waitingForPlayers;
@@ -47,11 +51,13 @@ public class MainMenu extends Application {
     public void onJoinButtonClick(ActionEvent event) {
         errorLabel.setText("");
 
-        if(userNameTextField.getText().equals("")) {
+        boolean test = true;
+
+        if(userNameTextField.getText().equals("") && !test) {
             errorLabel.setText("Username can't be empty!");
         }
         else {
-            if(IPTextField.getText().equals("")) {
+            if(IPTextField.getText().equals("") && !test) {
                 errorLabel.setText("IP can't be empty!");
             }
             else {
@@ -59,8 +65,15 @@ public class MainMenu extends Application {
                     String username= userNameTextField.getText();
                     Inet4Address ipAddress= (Inet4Address) Inet4Address.getByName(IPTextField.getText());
 
-                    new Client(username, ipAddress, this, event);
+                    client = new Client(username, ipAddress);
                     System.out.println("Connected");
+
+                    switchToWaitingForPlayers();
+                    this.event = event;
+
+                    Thread mainMenuThread = new Thread(this);
+                    mainMenuThread.start();
+
                 } catch(IOException err) {
                     errorLabel.setText("Something is wrong with IP");
                 }
@@ -106,7 +119,7 @@ public class MainMenu extends Application {
         waitingForPlayers.setVisible(true);
     }
 
-    public void switchToSetup(ActionEvent event) throws IOException {
+    public void switchToSetup() throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("setup.fxml")));
         Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
@@ -143,5 +156,48 @@ public class MainMenu extends Application {
 
     public static void main(String[] args) {
         launch();
+    }
+
+    /**
+     * Main menu loop while waiting for all players to connect
+     */
+    @Override
+    public void run() {
+        while(true) {
+            try {
+                //gameID = 0 - Update number of connected players
+                //gameID = 1 - Switch to the next scene
+                int gameID = client.getData();
+                int playerID = client.getData();
+                int posID = client.getData();
+
+                if(gameID == 0) {
+                    Platform.runLater(() -> updateConnectedPlayers(playerID, posID));
+                }
+                else if(gameID == 1) {
+                    Platform.runLater(() -> {
+                        try {
+                            switchToSetup();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                }
+            } catch (IOException err) {
+                try {
+                    client.closeConnection();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                Platform.runLater(() -> {
+                    try {
+                        stop();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+                break;
+            }
+        }
     }
 }

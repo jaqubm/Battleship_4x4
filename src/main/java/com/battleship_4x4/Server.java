@@ -154,7 +154,8 @@ public class Server extends Application implements Runnable{
         try {
             Inet4Address serverIP = (Inet4Address) Inet4Address.getByName(serverIPTextField.getText());
 
-            server = new ServerBackend(PORT, MAX_PLAYERS, serverIP);
+            server = new ServerBackend(PORT, MAX_PLAYERS, (Inet4Address) Inet4Address.getByName(null));
+            //server = new ServerBackend(PORT, MAX_PLAYERS, serverIP);
 
             waitingForPlayers();
 

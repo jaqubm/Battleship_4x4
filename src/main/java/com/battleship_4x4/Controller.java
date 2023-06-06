@@ -57,7 +57,7 @@ public class Controller implements Initializable {
         draggableMakerGrid.makeDraggable(ship5, ships);
     }
 
-    public void onReadyButtonClick(ActionEvent event) throws IOException {
+    public synchronized void onReadyButtonClick() {
         for (Ship tempShip: ships){
             for (int i = 0; i < tempShip.getSize(); i++) {
                 int id = (int) ((tempShip.pointList.get(i).getY() * 8) + tempShip.pointList.get(i).getX());
@@ -65,11 +65,5 @@ public class Controller implements Initializable {
             }
             System.out.println(" ");
         }
-
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("game.fxml")));
-        Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
     }
 }
