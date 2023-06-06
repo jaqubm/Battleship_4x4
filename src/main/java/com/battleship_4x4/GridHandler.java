@@ -10,15 +10,13 @@ import java.util.Objects;
 
 public class GridHandler extends GridBase {
 
-    Image waterImage = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/water_64.gif")).toString());
-    Image waterDarkerImage = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/water_darker_64.gif")).toString());
     private int quarter;
 
     public GridHandler(double planeWidth, double planeHeight, int gridSize, AnchorPane anchorPane) {
         super(planeWidth, planeHeight, gridSize, anchorPane);
     }
 
-    public void createGrid(int quarter) {
+    public void createGrid(int quarter, Image waterImage, Image waterDarkerImage) {
         this.quarter = quarter;
         ImagePattern waterImagePattern = new ImagePattern(waterImage);
         ImagePattern waterDarkerImagePattern = new ImagePattern(waterDarkerImage);

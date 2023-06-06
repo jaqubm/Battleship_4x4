@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class ShipSetup extends Application implements Initializable {
@@ -30,7 +32,10 @@ public class ShipSetup extends Application implements Initializable {
         DraggableMakerGrid draggableMakerGrid = new DraggableMakerGrid(boardPane.getPrefWidth(), boardPane.getPrefHeight(), gridSize, boardPane);
 
         GridHandler backgroundGridHandler = new GridHandler(boardPane.getPrefWidth(), boardPane.getPrefHeight(), gridSize, boardPane);
-        backgroundGridHandler.createGrid(0);
+
+        Image waterImage = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/water_64.gif")).toString());
+        Image waterDarkerImage = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/water_darker_64.gif")).toString());
+        backgroundGridHandler.createGrid(0, waterImage, waterDarkerImage);
 
         Ship ship2 = new Ship(gridSize, 2);
         ships.add(ship2);

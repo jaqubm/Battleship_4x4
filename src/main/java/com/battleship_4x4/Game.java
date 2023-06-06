@@ -63,10 +63,21 @@ public class Game extends Application implements Initializable {
         GridHandler backgroundGrid_3 = new GridHandler(boardPane3.getPrefWidth(), boardPane3.getPrefHeight(), gridSize, boardPane3);
         GridHandler backgroundGrid_4 = new GridHandler(boardPane4.getPrefWidth(), boardPane4.getPrefHeight(), gridSize, boardPane4);
 
-        backgroundGrid_1.createGrid(1);
-        backgroundGrid_2.createGrid(2);
-        backgroundGrid_3.createGrid(3);
-        backgroundGrid_4.createGrid(4);
+        Image waterImage = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/water_64.gif")).toString());
+        Image waterDarkerImage = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/water_darker_64.gif")).toString());
+        backgroundGrid_1.createGrid(1, waterImage, waterDarkerImage);
+
+        waterImage = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/water_yellow_64.gif")).toString());
+        waterDarkerImage = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/water_darker_yellow_64.gif")).toString());
+        backgroundGrid_2.createGrid(2, waterImage, waterDarkerImage);
+
+        waterImage = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/water_green_64.gif")).toString());
+        waterDarkerImage = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/water_darker_green_64.gif")).toString());
+        backgroundGrid_3.createGrid(3, waterImage, waterDarkerImage);
+
+        waterImage = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/water_red_64.gif")).toString());
+        waterDarkerImage = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/water_darker_red_64.gif")).toString());
+        backgroundGrid_4.createGrid(4, waterImage, waterDarkerImage);
 
         Ship ship2 = new Ship(gridSize, 2);
         ships.add(ship2);
@@ -106,8 +117,8 @@ public class Game extends Application implements Initializable {
         timeLimit=timeLimit-1;
 
         long second = timeLimit / 1000;
-        long millsecond = timeLimit % 100;
-        String time = String.format("%02d:%02d", second, millsecond);
+        long millisecond = timeLimit % 100;
+        String time = String.format("%02d:%02d", second, millisecond);
         timeLabel.setText(time);;
 
         if(timeLimit==0){
