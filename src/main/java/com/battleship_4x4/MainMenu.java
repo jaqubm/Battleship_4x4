@@ -120,7 +120,12 @@ public class MainMenu extends Application implements Runnable {
     }
 
     public void switchToSetup() throws IOException {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("setup.fxml")));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("setup.fxml"));
+        Parent root = loader.load();
+
+        ShipSetup shipSetup = loader.getController();
+        shipSetup.setClient(client);
+
         Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);

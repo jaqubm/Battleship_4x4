@@ -232,7 +232,17 @@ public class Server extends Application implements Runnable{
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+        }
 
+        for(int i=0; i<MAX_PLAYERS; i++) {
+            try {
+                int data;
+                data = server.getData(i);
+
+                System.out.println("Data: " + data);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 }
