@@ -16,7 +16,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.Inet4Address;
-import java.util.Objects;
 
 /**
  * MainMenu Class is main-menu.fxml controller
@@ -119,7 +118,7 @@ public class MainMenu extends Application implements Runnable {
         waitingForPlayers.setVisible(true);
     }
 
-    public void switchToSetup() throws IOException {
+    public void switchToShipSetup() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ship-setup.fxml"));
         Parent root = loader.load();
 
@@ -176,17 +175,21 @@ public class MainMenu extends Application implements Runnable {
                 int playerID = client.getData();
                 int posID = client.getData();
 
+                System.out.println("Client: gameID: " + gameID);
+
                 if(gameID == 0) {
                     Platform.runLater(() -> updateConnectedPlayers(playerID, posID));
                 }
                 else if(gameID == 1) {
                     Platform.runLater(() -> {
                         try {
-                            switchToSetup();
+                            switchToShipSetup();
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
                     });
+
+                    break;
                 }
             } catch (IOException err) {
                 try {

@@ -1,10 +1,14 @@
 package com.battleship_4x4;
 
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
@@ -65,7 +69,7 @@ public class ShipSetup extends Application implements Initializable {
         this.client = client;
     }
 
-    public void onReadyButtonClick() throws IOException {
+    public void onReadyButtonClick(ActionEvent event) throws IOException {
         for (Ship tempShip: ships){
             for (int i = 0; i < tempShip.getSize(); i++) {
                 int id = (int) ((tempShip.pointList.get(i).getY() * 8) + tempShip.pointList.get(i).getX());
@@ -75,6 +79,21 @@ public class ShipSetup extends Application implements Initializable {
         }
 
         client.sendData(100);
+
+        if (client.getData() == 3) {
+            System.out.println("Client: gameID: 3");
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("game.fxml"));
+            Parent root = loader.load();
+
+            Game game = loader.getController();
+            game.setGameThread(client);
+
+            Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }
     }
 
     @Override

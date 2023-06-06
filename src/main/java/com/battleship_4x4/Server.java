@@ -65,6 +65,7 @@ class ServerBackend {
      */
     public void sendData(int id, int data) throws IOException {
         clientOutput.get(id).writeInt(data);
+        System.out.println("Server: sent - " + data + " to: " + id);
     }
 
     /**
@@ -102,7 +103,7 @@ class ServerBackend {
 
 public class Server extends Application implements Runnable{
 
-    private final int MAX_PLAYERS = 4;
+    private final int MAX_PLAYERS = 1;
     private int playersConnected = 0;
     private ServerBackend server;
     public final int PORT = 5000;
@@ -190,7 +191,7 @@ public class Server extends Application implements Runnable{
      */
     @Override
     public void stop() throws IOException {
-        System.out.println("Closing Server");
+        System.out.println("Server: Closing Server");
 
         server.closeServer();
 
@@ -207,10 +208,11 @@ public class Server extends Application implements Runnable{
      */
     @Override
     public void run() {
-        while (playersConnected != 4) {
+        //Waiting for players to connect
+        while (playersConnected != MAX_PLAYERS) {
             try {
                 server.establishingConnection(playersConnected);
-                System.out.println("Client connected: " + server.getClientName(playersConnected));
+                System.out.println("Server: Client connected: " + server.getClientName(playersConnected));
                 playersConnected++;
 
                 for(int i=0; i<playersConnected; i++) {
@@ -224,6 +226,7 @@ public class Server extends Application implements Runnable{
             }
         }
 
+        //Waiting for players to be ready
         for(int i=0; i<MAX_PLAYERS; i++) {
             try {
                 server.sendData(i ,1);
@@ -234,15 +237,20 @@ public class Server extends Application implements Runnable{
             }
         }
 
+        //Main game loop
         for(int i=0; i<MAX_PLAYERS; i++) {
             try {
                 int data;
                 data = server.getData(i);
-
-                System.out.println("Data: " + data);
+                System.out.println("Server: Data: " + data);
+                server.sendData(i, 3);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+        }
+
+        while(true) {
+            break;
         }
     }
 }

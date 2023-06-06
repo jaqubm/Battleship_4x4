@@ -1,6 +1,7 @@
 package com.battleship_4x4;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -23,6 +24,26 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
+
+class GameThread implements Runnable {
+
+    Client client;
+
+    Game game;
+
+    public void setGame(Client client, Game game) {
+        this.client = client;
+        this.game = game;
+
+        Thread gameThread = new Thread(this);
+        gameThread.start();
+    }
+
+    @Override
+    public void run() {
+        System.out.println("CLient: GameThread works!");
+    }
+}
 
 
 public class Game extends Application implements Initializable {
@@ -101,8 +122,13 @@ public class Game extends Application implements Initializable {
 
        timer();
     }
+
+    public void setGameThread(Client client) {
+        new GameThread().setGame(client, this);
+    }
+
     private void timer(){
-         AtomicLong timeLimit= new AtomicLong(5000);
+        AtomicLong timeLimit= new AtomicLong(5000);
         updateTimerLabel(timeLimit.get());
 
         timeline = new Timeline(new KeyFrame(Duration.millis(1), event -> {
@@ -122,7 +148,7 @@ public class Game extends Application implements Initializable {
         timeLabel.setText(time);;
 
         if(timeLimit==0){
-            System.out.println("Counting ends");
+            System.out.println("Client: Counting ends");
             timeline.stop();
         }
         return timeLimit;
@@ -136,12 +162,10 @@ public class Game extends Application implements Initializable {
         stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
-
     }
 
     public static void main(String[] args) {
         launch();
-
     }
 }
 
