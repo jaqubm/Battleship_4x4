@@ -79,7 +79,7 @@ public class ShipSetup extends Application implements Initializable {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(ShipSetup.class.getResource("setup.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(ShipSetup.class.getResource("ship-setup.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1200, 800);
         stage.setTitle("Setup");
         stage.setResizable(false);

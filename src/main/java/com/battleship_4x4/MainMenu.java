@@ -120,7 +120,7 @@ public class MainMenu extends Application implements Runnable {
     }
 
     public void switchToSetup() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("setup.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("ship-setup.fxml"));
         Parent root = loader.load();
 
         ShipSetup shipSetup = loader.getController();
@@ -171,7 +171,7 @@ public class MainMenu extends Application implements Runnable {
         while(true) {
             try {
                 //gameID = 0 - Update number of connected players
-                //gameID = 1 - Switch to the next scene
+                //gameID = 1 - Switch to the ShipSetup scene
                 int gameID = client.getData();
                 int playerID = client.getData();
                 int posID = client.getData();
