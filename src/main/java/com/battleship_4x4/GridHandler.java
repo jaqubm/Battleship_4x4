@@ -6,18 +6,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
-import java.util.Objects;
-
 public class GridHandler extends GridBase {
-
-    private int quarter;
 
     public GridHandler(double planeWidth, double planeHeight, int gridSize, AnchorPane anchorPane) {
         super(planeWidth, planeHeight, gridSize, anchorPane);
     }
 
     public void createGrid(int quarter, Image waterImage, Image waterDarkerImage) {
-        this.quarter = quarter;
         ImagePattern waterImagePattern = new ImagePattern(waterImage);
         ImagePattern waterDarkerImagePattern = new ImagePattern(waterDarkerImage);
 
@@ -35,17 +30,27 @@ public class GridHandler extends GridBase {
             getAnchorPane().getChildren().add(rectangle);
 
             rectangle.setOnMouseClicked((MouseEvent event) -> {
-
-                handleGridClick(y, x,quarter);
-
+                handleGridClick(y, x, quarter);
             });
         }
+    }
+
+    public void fillRectangle(int id, Image image) {
+        ImagePattern imagePattern = new ImagePattern(image);
+
+        int x = (id % getTilesAcross());
+        int y = (id / getTilesAcross());
+
+        Rectangle rectangle = new Rectangle(x * getGridSize(),y * getGridSize(),getGridSize(),getGridSize());
+        rectangle.setFill(imagePattern);
+
+        getAnchorPane().getChildren().set(id, rectangle);
     }
 
     private int toBoard(double pixel) { //zamiana piksela na współrzędną siatki
         return (int) (pixel + 64 / 2) / 64;
 }
-    private void handleGridClick(int row, int column,int quarter) {
+    private void handleGridClick(int row, int column, int quarter) {
         // Logika obsługi kliknięcia w siatkę
         System.out.println("Clicked cell: row=" + row + ", column=" + column + " quarter" + quarter);
     }
