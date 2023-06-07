@@ -169,18 +169,16 @@ public class MainMenu extends Application implements Runnable {
     public void run() {
         while(true) {
             try {
-                //gameID = 0 - Update number of connected players
-                //gameID = 1 - Switch to the ShipSetup scene
                 int gameID = client.getData();
                 int playerID = client.getData();
                 int posID = client.getData();
 
                 System.out.println("Client: gameID: " + gameID);
 
-                if(gameID == 0) {
+                if(gameID == 0) {   //gameID = 0 - Update number of connected players
                     Platform.runLater(() -> updateConnectedPlayers(playerID, posID));
                 }
-                else if(gameID == 1) {
+                else if(gameID == 1) {  //gameID = 1 - Switch to the ShipSetup scene
                     Platform.runLater(() -> {
                         try {
                             switchToShipSetup();

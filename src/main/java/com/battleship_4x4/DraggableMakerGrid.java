@@ -25,15 +25,15 @@ public class DraggableMakerGrid extends GridBase{
             allowRotation = false;
         });
         node.setOnMouseDragged(e -> {
-            node.relocate(e.getSceneX() - mouseAnchorX + ship.getboardX(),
-                    e.getSceneY() - mouseAnchorY + ship.getboardY());
+            node.relocate(e.getSceneX() - mouseAnchorX + ship.getBoardX(),
+                    e.getSceneY() - mouseAnchorY + ship.getBoardY());
         });
         node.setOnMouseReleased(e -> {
             int newX = toBoard(node.getLayoutX()); //getLayout a nie getScene żeby uzależnić to od położenia statku, a nie myszki
             int newY = toBoard(node.getLayoutY());
 
-            int x0 = toBoard(ship.getboardX());
-            int y0 = toBoard(ship.getboardY());
+            int x0 = toBoard(ship.getBoardX());
+            int y0 = toBoard(ship.getBoardY());
 
             ship.move(newX, newY);
             if (collisionCheck(ship, ships) || !inBoardCheck(ship)) ship.move(x0, y0);

@@ -3,7 +3,6 @@ package com.battleship_4x4;
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
@@ -43,13 +42,6 @@ public class Ship
             rectangle.setFill(new ImagePattern(ship5Image));
         }
 
-        rectangle.setOnMouseClicked((MouseEvent event) -> {
-            double mouseAnchorX = event.getSceneX();
-            double mouseAnchorY = event.getSceneY();
-
-            handleGridClick(toBoard(mouseAnchorY), toBoard(mouseAnchorX));
-        });
-
         this.boardX = 0;
         this.boardY = 0;
         pointList = new ArrayList<>();
@@ -61,9 +53,7 @@ public class Ship
 
 
     }
-    private void handleGridClick(int row, int column) {
-        System.out.println("Clicked cell: row=" + row % 8 + ", column=" + column % 8);
-    }
+
     public void move (int x, int y) {
         boardX = x * GridSize;
         boardY = y * GridSize;
@@ -91,6 +81,6 @@ public class Ship
     public void setBoardX(double x) {this.boardX = x;}
     public void setBoardY(double y) {this.boardY = y;}
 
-    public double getboardY() {return this.boardY;}
-    public double getboardX() {return this.boardX;}
+    public double getBoardY() {return this.boardY;}
+    public double getBoardX() {return this.boardX;}
 }

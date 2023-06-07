@@ -103,7 +103,7 @@ class ServerBackend {
 
 public class Server extends Application implements Runnable{
 
-    private final int MAX_PLAYERS = 1;
+    private final int MAX_PLAYERS = 2;
     private int playersConnected = 0;
     private ServerBackend server;
     public final int PORT = 5000;
@@ -226,7 +226,7 @@ public class Server extends Application implements Runnable{
             }
         }
 
-        //Waiting for players to be ready
+        //Sending all players new game state
         for(int i=0; i<MAX_PLAYERS; i++) {
             try {
                 server.sendData(i ,1);
@@ -237,18 +237,29 @@ public class Server extends Application implements Runnable{
             }
         }
 
-        //Main game loop
+        //Waiting for players to be reade and reading their ships positions
         for(int i=0; i<MAX_PLAYERS; i++) {
             try {
-                int data;
-                data = server.getData(i);
-                System.out.println("Server: Data: " + data);
+                for(int j=0; j<14; j++) {
+                    int data;
+                    data = server.getData(i);
+                    System.out.println("Server: Player: " + i + "Data: " + data);
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        //Sending all players new game state
+        for(int i=0; i<MAX_PLAYERS; i++) {
+            try {
                 server.sendData(i, 3);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
 
+        //Main game loop on the server side
         while(true) {
             break;
         }

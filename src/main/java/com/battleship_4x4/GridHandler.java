@@ -12,25 +12,44 @@ public class GridHandler extends GridBase {
         super(planeWidth, planeHeight, gridSize, anchorPane);
     }
 
-    public void createGrid(int quarter, Image waterImage, Image waterDarkerImage) {
+    public Rectangle createRectangle(ImagePattern waterImagePattern, ImagePattern waterDarkerImagePattern, int i) {
+        int x = (i % getTilesAcross());
+        int y = (i / getTilesAcross());
+
+        Rectangle rectangle = new Rectangle(x * getGridSize(),y * getGridSize(),getGridSize(),getGridSize());
+
+        if((x + y) % 2 == 0){
+            rectangle.setFill(waterImagePattern);
+        } else {
+            rectangle.setFill(waterDarkerImagePattern);
+        }
+
+        return rectangle;
+    }
+
+    public void createSetupGrid(Image waterImage, Image waterDarkerImage) {
         ImagePattern waterImagePattern = new ImagePattern(waterImage);
         ImagePattern waterDarkerImagePattern = new ImagePattern(waterDarkerImage);
 
         for(int i = 0; i < getTileAmount(); i++){
+            Rectangle rectangle = createRectangle(waterImagePattern, waterDarkerImagePattern, i);
+            getAnchorPane().getChildren().add(rectangle);
+        }
+    }
+
+    public void createGameGrid(Image waterImage, Image waterDarkerImage, int quarter, Game game) {
+        ImagePattern waterImagePattern = new ImagePattern(waterImage);
+        ImagePattern waterDarkerImagePattern = new ImagePattern(waterDarkerImage);
+
+        for(int i = 0; i < getTileAmount(); i++){
+            Rectangle rectangle = createRectangle(waterImagePattern, waterDarkerImagePattern, i);
+            getAnchorPane().getChildren().add(rectangle);
+
             int x = (i % getTilesAcross());
             int y = (i / getTilesAcross());
 
-            Rectangle rectangle = new Rectangle(x * getGridSize(),y * getGridSize(),getGridSize(),getGridSize());
-
-            if((x + y) % 2 == 0){
-                rectangle.setFill(waterImagePattern);
-            } else {
-                rectangle.setFill(waterDarkerImagePattern);
-            }
-            getAnchorPane().getChildren().add(rectangle);
-
             rectangle.setOnMouseClicked((MouseEvent event) -> {
-                handleGridClick(y, x, quarter);
+                game.handleGridClick(y, x, quarter);
             });
         }
     }
@@ -50,9 +69,5 @@ public class GridHandler extends GridBase {
     private int toBoard(double pixel) { //zamiana piksela na współrzędną siatki
         return (int) (pixel + 64 / 2) / 64;
 }
-    private void handleGridClick(int row, int column, int quarter) {
-        // Logika obsługi kliknięcia w siatkę
-        System.out.println("Clicked cell: row=" + row + ", column=" + column + " quarter" + quarter);
-    }
 }
 

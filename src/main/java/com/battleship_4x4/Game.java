@@ -40,12 +40,23 @@ class GameThread implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("CLient: GameThread works!");
+        System.out.println("Client: GameThread works!");
+
+        try {
+            int data = client.getData();
+            System.out.println("Client: Data: " + data);
+            if(data == 3)
+                game.setMyRound(true);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
 
 
 public class Game extends Application implements Initializable {
+
+    boolean myRound = false;
 
     @FXML
     private AnchorPane boardPane1;
@@ -85,19 +96,19 @@ public class Game extends Application implements Initializable {
 
         Image waterImage = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/water_64.gif")).toString());
         Image waterDarkerImage = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/water_darker_64.gif")).toString());
-        backgroundGrid_1.createGrid(1, waterImage, waterDarkerImage);
+        backgroundGrid_1.createSetupGrid(waterImage, waterDarkerImage);
 
         waterImage = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/water_yellow_64.gif")).toString());
         waterDarkerImage = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/water_darker_yellow_64.gif")).toString());
-        backgroundGrid_2.createGrid(2, waterImage, waterDarkerImage);
+        backgroundGrid_2.createGameGrid(waterImage, waterDarkerImage, 2, this);
 
         waterImage = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/water_green_64.gif")).toString());
         waterDarkerImage = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/water_darker_green_64.gif")).toString());
-        backgroundGrid_3.createGrid(3, waterImage, waterDarkerImage);
+        backgroundGrid_3.createGameGrid(waterImage, waterDarkerImage, 3, this);
 
         waterImage = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/water_red_64.gif")).toString());
         waterDarkerImage = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/water_darker_red_64.gif")).toString());
-        backgroundGrid_4.createGrid(4, waterImage, waterDarkerImage);
+        backgroundGrid_4.createGameGrid(waterImage, waterDarkerImage, 4, this);
 
         Ship ship2 = new Ship(gridSize, 2);
         ships.add(ship2);
@@ -120,6 +131,16 @@ public class Game extends Application implements Initializable {
 
 
        timer();
+    }
+
+    public void handleGridClick(int row, int column, int quarter) {
+        if(myRound) {
+            System.out.println("Clicked cell: row=" + row + ", column=" + column + " quarter" + quarter);
+        }
+    }
+
+    public void setMyRound(boolean myRound) {
+        this.myRound = myRound;
     }
 
     public void setGameThread(Client client) {

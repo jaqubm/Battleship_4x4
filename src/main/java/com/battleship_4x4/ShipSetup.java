@@ -1,7 +1,6 @@
 package com.battleship_4x4;
 
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
@@ -39,7 +38,7 @@ public class ShipSetup extends Application implements Initializable {
 
         Image waterImage = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/water_64.gif")).toString());
         Image waterDarkerImage = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/water_darker_64.gif")).toString());
-        backgroundGridHandler.createGrid(0, waterImage, waterDarkerImage);
+        backgroundGridHandler.createSetupGrid(waterImage, waterDarkerImage);
 
         Ship ship2 = new Ship(gridSize, 2);
         ships.add(ship2);
@@ -70,30 +69,20 @@ public class ShipSetup extends Application implements Initializable {
     }
 
     public void onReadyButtonClick(ActionEvent event) throws IOException {
-        for (Ship tempShip: ships){
-            for (int i = 0; i < tempShip.getSize(); i++) {
-                int id = (int) ((tempShip.pointList.get(i).getY() * 8) + tempShip.pointList.get(i).getX());
-                System.out.println("ID: " + id);
-            }
-            System.out.println(" ");
-        }
+        for (Ship tempShip: ships)
+            for (int i = 0; i < tempShip.getSize(); i++)
+                client.sendData((int) ((tempShip.pointList.get(i).getY() * 8) + tempShip.pointList.get(i).getX()));
 
-        client.sendData(100);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("game.fxml"));
+        Parent root = loader.load();
 
-        if (client.getData() == 3) {
-            System.out.println("Client: gameID: 3");
+        Game game = loader.getController();
+        game.setGameThread(client);
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("game.fxml"));
-            Parent root = loader.load();
-
-            Game game = loader.getController();
-            game.setGameThread(client);
-
-            Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        }
+        Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
     @Override
