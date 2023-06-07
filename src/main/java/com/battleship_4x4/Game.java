@@ -40,13 +40,13 @@ class GameThread implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("Client: GameThread works!");
-
         try {
             int data = client.getData();
-            System.out.println("Client: Data: " + data);
-            if(data == 3)
+            System.out.println("Client: " + client.getClientID() + " received - " + data);
+            if(data == 3) {
                 game.setMyRound(true);
+                game.timer(10000);
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -129,8 +129,7 @@ public class Game extends Application implements Initializable {
         ship5.move(0, 3);
         boardPane1.getChildren().add(ship5.getRectangle());
 
-
-       timer();
+       timer(10000);
     }
 
     public void handleGridClick(int row, int column, int quarter) {
@@ -147,28 +146,27 @@ public class Game extends Application implements Initializable {
         new GameThread().setGame(client, this);
     }
 
-    private void timer(){
-        AtomicLong timeLimit= new AtomicLong(5000);
+    public void timer(long time){
+        AtomicLong timeLimit= new AtomicLong(time);
         updateTimerLabel(timeLimit.get());
 
-        timeline = new Timeline(new KeyFrame(Duration.millis(1), event -> {
+        timeline = new Timeline(new KeyFrame(Duration.millis(10), event -> {
             timeLimit.set(updateTimerLabel(timeLimit.get()));
-
         }));
+
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
     }
 
     private long updateTimerLabel(long timeLimit) {
-        timeLimit=timeLimit-1;
+        timeLimit=timeLimit-10;
 
         long second = timeLimit / 1000;
-        long millisecond = timeLimit % 100;
+        long millisecond = (timeLimit % 1000) / 10;
         String time = String.format("%02d:%02d", second, millisecond);
         timeLabel.setText(time);;
 
         if(timeLimit==0){
-            System.out.println("Client: Counting ends");
             timeline.stop();
         }
         return timeLimit;

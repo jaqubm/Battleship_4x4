@@ -1,9 +1,5 @@
 package com.battleship_4x4;
 
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.stage.Stage;
-
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -74,5 +70,13 @@ public class Client {
      */
     public int getData() throws IOException {
         return input.readInt();
+    }
+
+    public int getClientID() {
+        return clientID;
+    }
+
+    public String getClientName() {
+        return clientName;
     }
 }
