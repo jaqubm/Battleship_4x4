@@ -1,14 +1,17 @@
 package com.battleship_4x4;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.scene.shape.Rectangle;
 import java.io.IOException;
@@ -45,7 +48,7 @@ class GameThread implements Runnable {
             System.out.println("Client: " + client.getClientID() + " received - " + data);
             if(data == 3) {
                 game.setMyRound(true);
-                game.timer(10000);
+                Platform.runLater(() -> game.timer(5000));
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -73,7 +76,8 @@ public class Game extends Application implements Initializable {
     @FXML
     private Label timeLabel;
     Timeline timeline;
-    public List<Ship> ships = new ArrayList<>();
+
+    int gridSize;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -87,7 +91,7 @@ public class Game extends Application implements Initializable {
         timer.setFill(timerImagePattern);
 
 
-        int gridSize = (int) (boardPane1.getPrefWidth() / 8);
+        gridSize = (int) (boardPane1.getPrefWidth() / 8);
 
         GridHandler backgroundGrid_1 = new GridHandler(boardPane1.getPrefWidth(), boardPane1.getPrefHeight(), gridSize, boardPane1);
         GridHandler backgroundGrid_2 = new GridHandler(boardPane2.getPrefWidth(), boardPane2.getPrefHeight(), gridSize, boardPane2);
@@ -109,27 +113,6 @@ public class Game extends Application implements Initializable {
         waterImage = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/water_red_64.gif")).toString());
         waterDarkerImage = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/water_darker_red_64.gif")).toString());
         backgroundGrid_4.createGameGrid(waterImage, waterDarkerImage, 4, this);
-
-        Ship ship2 = new Ship(gridSize, 2);
-        ships.add(ship2);
-        boardPane1.getChildren().add(ship2.getRectangle());
-
-        Ship ship3 = new Ship(gridSize, 3);
-        ships.add(ship3);
-        ship3.move(0, 1);
-        boardPane1.getChildren().add(ship3.getRectangle());
-
-        Ship ship4 = new Ship(gridSize, 4);
-        ships.add(ship4);
-        ship4.move(0, 2);
-        boardPane1.getChildren().add(ship4.getRectangle());
-
-        Ship ship5 = new Ship(gridSize, 5);
-        ships.add(ship5);
-        ship5.move(0, 3);
-        boardPane1.getChildren().add(ship5.getRectangle());
-
-       timer(10000);
     }
 
     public void handleGridClick(int row, int column, int quarter) {
@@ -142,6 +125,21 @@ public class Game extends Application implements Initializable {
         this.myRound = myRound;
     }
 
+    public void setShips(int size, int x, int y, boolean direction) {
+        Ship ship = new Ship(gridSize, size);
+        ship.move(x, y);
+
+        if (!direction) {
+            Rotate rotate;
+            Node node = ship.getRectangle();
+            ship.move(ship.toBoard(node.getLayoutX()), ship.toBoard(node.getLayoutY()));
+            rotate = new Rotate(-90, (double) gridSize / 2, (double) gridSize / 2);
+            node.getTransforms().add(rotate);
+        }
+
+        boardPane1.getChildren().add(ship.getRectangle());
+    }
+
     public void setGameThread(Client client) {
         new GameThread().setGame(client, this);
     }
@@ -150,9 +148,10 @@ public class Game extends Application implements Initializable {
         AtomicLong timeLimit= new AtomicLong(time);
         updateTimerLabel(timeLimit.get());
 
-        timeline = new Timeline(new KeyFrame(Duration.millis(10), event -> {
-            timeLimit.set(updateTimerLabel(timeLimit.get()));
-        }));
+        if(timeline != null)
+            timeline.stop();
+
+        timeline = new Timeline(new KeyFrame(Duration.millis(10), event -> timeLimit.set(updateTimerLabel(timeLimit.get()))));
 
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
@@ -166,7 +165,7 @@ public class Game extends Application implements Initializable {
         String time = String.format("%02d:%02d", second, millisecond);
         timeLabel.setText(time);;
 
-        if(timeLimit==0){
+        if(timeLimit <= 0) {
             timeline.stop();
         }
         return timeLimit;

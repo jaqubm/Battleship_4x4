@@ -2,7 +2,6 @@ package com.battleship_4x4;
 
 import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
@@ -28,38 +27,32 @@ public class Ship
 
         this.size = ship_size;
         this.direction = true;
+
         rectangle = new Rectangle(0, 0, rectangleSize * ship_size, rectangleSize); //każdy statek jest tworzony na 0 0, a potem przerzucany na inną pozytcję metodą move
-        if (ship_size == 2) {
+
+        if (ship_size == 2)
             rectangle.setFill(new ImagePattern(ship2Image));
-        }
-        else if (ship_size == 3) {
+        else if (ship_size == 3)
             rectangle.setFill(new ImagePattern(ship3Image));
-        }
-        else if (ship_size == 4) {
+        else if (ship_size == 4)
             rectangle.setFill(new ImagePattern(ship4Image));
-        }
-        else {
+        else
             rectangle.setFill(new ImagePattern(ship5Image));
-        }
 
         this.boardX = 0;
         this.boardY = 0;
-        pointList = new ArrayList<>();
-        for (int i = 0; i < ship_size; i++)
-        {
-            pointList.add(new Point2D(i,0));
-        }
         this.GridSize = rectangleSize;
 
-
+        pointList = new ArrayList<>();
+        for (int i = 0; i < ship_size; i++)
+            pointList.add(new Point2D(i,0));
     }
 
     public void move (int x, int y) {
         boardX = x * GridSize;
         boardY = y * GridSize;
 
-        for (int i = 0; i < size; i++)
-        {
+        for (int i = 0; i < size; i++) {
             if (direction) pointList.set(i, new Point2D(x + i , y));
             else pointList.set(i, new Point2D(x , y - i));
         }
@@ -67,7 +60,15 @@ public class Ship
         rectangle.relocate(boardX, boardY);
     }
 
-    private int toBoard(double pixel) { //zamiana piksela na współrzędną siatki
+    public int getX() {
+        return (int)(boardX / GridSize);
+    }
+
+    public int getY() {
+        return (int)(boardY / GridSize);
+    }
+
+    int toBoard(double pixel) { //zamiana piksela na współrzędną siatki
         return (int) (pixel + GridSize / 2) / GridSize;
     }
 

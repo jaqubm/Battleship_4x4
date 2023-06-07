@@ -77,6 +77,7 @@ public class ShipSetup extends Application implements Initializable {
         Parent root = loader.load();
 
         Game game = loader.getController();
+        for (Ship ship : ships) game.setShips(ship.getSize(), ship.getX(), ship.getY(), ship.getDirection());
         game.setGameThread(client);
 
         Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
