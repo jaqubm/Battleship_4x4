@@ -65,7 +65,7 @@ class ServerBackend {
      */
     public void sendData(int id, int data) throws IOException {
         clientOutput.get(id).writeInt(data);
-        System.out.println("Server: sent - " + data + " to: " + id);
+        System.out.println("\nServer: sent - " + data + " to: " + id);
     }
 
     /**
@@ -103,10 +103,9 @@ class ServerBackend {
 
 public class Server extends Application implements Runnable{
 
-    private final int MAX_PLAYERS = 2;
+    private final int MAX_PLAYERS = 1;
     private int playersConnected = 0;
     private ServerBackend server;
-    public final int PORT = 5000;
 
     @FXML
     private AnchorPane serverMainView;
@@ -155,6 +154,7 @@ public class Server extends Application implements Runnable{
         try {
             Inet4Address serverIP = (Inet4Address) Inet4Address.getByName(serverIPTextField.getText());
 
+            int PORT = 5000;
             server = new ServerBackend(PORT, MAX_PLAYERS, (Inet4Address) Inet4Address.getByName(null));
             //server = new ServerBackend(PORT, MAX_PLAYERS, serverIP);
 
@@ -237,17 +237,40 @@ public class Server extends Application implements Runnable{
             }
         }
 
-        //Waiting for players to be reade and reading their ships positions
-        for(int i=0; i<MAX_PLAYERS; i++) {
+        //Map description
+        //0 - empty
+        //1 - contain ship
+        //2 - contain missed shot
+        //3 - contain destroyed ship
+        ArrayList<ArrayList<Integer>> map = new ArrayList<>(MAX_PLAYERS);
+
+        //Waiting for players to be ready and reading their ships positions
+        int MAP_SIZE = 64;
+        for(int i = 0; i<MAX_PLAYERS; i++) {
+            map.add(new ArrayList<>(MAP_SIZE));
+            for(int j = 0; j< MAP_SIZE; j++) {
+                map.get(i).add(j, 0);
+            }
+
             try {
                 for(int j=0; j<14; j++) {
-                    int data;
-                    data = server.getData(i);
-                    System.out.println("Server: Player: " + i + "Data: " + data);
+                    int data = server.getData(i);
+                    map.get(i).set(data, 1);
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+        }
+
+        //Showing maps to test
+        for(int i=0; i<MAX_PLAYERS; i++) {
+            System.out.print("\nMap of player ID: " + i);
+            for(int j = 0; j< MAP_SIZE; j++) {
+                if(j % 8 == 0)
+                    System.out.println();
+                System.out.print(map.get(i).get(j));
+            }
+            System.out.println();
         }
 
         //Sending all players new game state
