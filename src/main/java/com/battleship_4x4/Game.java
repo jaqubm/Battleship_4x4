@@ -43,12 +43,37 @@ class GameThread implements Runnable {
 
     @Override
     public void run() {
+        //Waiting for all players to be ready
         try {
-            int data = client.getData();
-            System.out.println("Client: " + client.getClientID() + " received - " + data);
-            if(data == 3) {
-                game.setMyRound(true);
-                Platform.runLater(() -> game.timer(5000));
+            if(client.getData() == 0) {
+                System.out.println("All players are ready!");
+
+                while(true) {
+                    int gameID = client.getData();
+                    System.out.println("Client: gameID: " + gameID);
+
+                    if(gameID == -1) {
+                        break;
+                    }
+                    else if(gameID == client.getClientID()) {
+                        game.setMyRound(true);
+                        Platform.runLater(() -> game.timer(10000));
+                    }
+
+                    int playerID = client.getData();
+                    //PlayerID = 4 - Map didn't change
+                    if(playerID != 4) {
+                        int posID = client.getData();
+                        int statusID = client.getData();
+
+                        System.out.println("Client: Update from server: " + playerID + " " + posID + " " + statusID);
+
+                        if(statusID == 2)
+                            Platform.runLater(() -> game.setShot(true, playerID, posID));
+                        else if(statusID == 3)
+                            Platform.runLater(() -> game.setShot(false, playerID, posID));
+                    }
+                }
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -59,7 +84,19 @@ class GameThread implements Runnable {
 
 public class Game extends Application implements Initializable {
 
-    boolean myRound = false;
+    Client client;
+    private boolean myRound = false;
+
+    int gridSize;
+    Timeline timeline;
+
+    Image missedShot = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/board/marker_miss_64.png")).toString());
+    Image hitShot = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/board/marker_hit_64.png")).toString());
+
+    GridHandler backgroundGrid_1;
+    GridHandler backgroundGrid_2;
+    GridHandler backgroundGrid_3;
+    GridHandler backgroundGrid_4;
 
     @FXML
     private AnchorPane boardPane1;
@@ -75,9 +112,6 @@ public class Game extends Application implements Initializable {
     private Rectangle scoreboard;
     @FXML
     private Label timeLabel;
-    Timeline timeline;
-
-    int gridSize;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -90,13 +124,12 @@ public class Game extends Application implements Initializable {
         scoreboard.setFill(scoreboardImagePattern);
         timer.setFill(timerImagePattern);
 
-
         gridSize = (int) (boardPane1.getPrefWidth() / 8);
 
-        GridHandler backgroundGrid_1 = new GridHandler(boardPane1.getPrefWidth(), boardPane1.getPrefHeight(), gridSize, boardPane1);
-        GridHandler backgroundGrid_2 = new GridHandler(boardPane2.getPrefWidth(), boardPane2.getPrefHeight(), gridSize, boardPane2);
-        GridHandler backgroundGrid_3 = new GridHandler(boardPane3.getPrefWidth(), boardPane3.getPrefHeight(), gridSize, boardPane3);
-        GridHandler backgroundGrid_4 = new GridHandler(boardPane4.getPrefWidth(), boardPane4.getPrefHeight(), gridSize, boardPane4);
+        backgroundGrid_1 = new GridHandler(boardPane1.getPrefWidth(), boardPane1.getPrefHeight(), gridSize, boardPane1);
+        backgroundGrid_2 = new GridHandler(boardPane2.getPrefWidth(), boardPane2.getPrefHeight(), gridSize, boardPane2);
+        backgroundGrid_3 = new GridHandler(boardPane3.getPrefWidth(), boardPane3.getPrefHeight(), gridSize, boardPane3);
+        backgroundGrid_4 = new GridHandler(boardPane4.getPrefWidth(), boardPane4.getPrefHeight(), gridSize, boardPane4);
 
         Image waterImage = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/water_64.gif")).toString());
         Image waterDarkerImage = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/water_darker_64.gif")).toString());
@@ -115,9 +148,38 @@ public class Game extends Application implements Initializable {
         backgroundGrid_4.createGameGrid(waterImage, waterDarkerImage, 4, this);
     }
 
-    public void handleGridClick(int row, int column, int quarter) {
+    public void handleGridClick(int quarter, int pos) throws IOException {
         if(myRound) {
-            System.out.println("Clicked cell: row=" + row + ", column=" + column + " quarter" + quarter);
+            client.sendData(quarter);
+            client.sendData(pos);
+
+            myRound = false;
+
+            if(timeline != null)
+                timeline.stop();
+        }
+    }
+
+    public void setShot(boolean missed, int quarter, int pos) {
+        if(missed) {
+            if(quarter == 0)
+                backgroundGrid_1.fillRectangle(pos, missedShot);
+            else if(quarter == 1)
+                backgroundGrid_2.fillRectangle(pos, missedShot);
+            else if(quarter == 2)
+                backgroundGrid_3.fillRectangle(pos, missedShot);
+            else if(quarter == 3)
+                backgroundGrid_4.fillRectangle(pos, missedShot);
+        }
+        else {
+            if(quarter == 0)
+                backgroundGrid_1.fillRectangle(pos, hitShot);
+            else if(quarter == 1)
+                backgroundGrid_2.fillRectangle(pos, hitShot);
+            else if(quarter == 2)
+                backgroundGrid_3.fillRectangle(pos, hitShot);
+            else if(quarter == 3)
+                backgroundGrid_4.fillRectangle(pos, hitShot);
         }
     }
 
@@ -141,6 +203,7 @@ public class Game extends Application implements Initializable {
     }
 
     public void setGameThread(Client client) {
+        this.client = client;
         new GameThread().setGame(client, this);
     }
 

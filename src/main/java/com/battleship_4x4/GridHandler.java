@@ -6,6 +6,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
+import java.io.IOException;
+
 public class GridHandler extends GridBase {
 
     public GridHandler(double planeWidth, double planeHeight, int gridSize, AnchorPane anchorPane) {
@@ -49,7 +51,11 @@ public class GridHandler extends GridBase {
             int y = (i / getTilesAcross());
 
             rectangle.setOnMouseClicked((MouseEvent event) -> {
-                game.handleGridClick(y, x, quarter);
+                try {
+                    game.handleGridClick(quarter, (y * 8) + x);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             });
         }
     }
