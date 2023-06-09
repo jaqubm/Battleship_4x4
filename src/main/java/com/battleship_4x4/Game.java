@@ -16,8 +16,6 @@ import javafx.stage.Stage;
 import javafx.scene.shape.Rectangle;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicLong;
@@ -32,6 +30,8 @@ class GameThread implements Runnable {
     Client client;
 
     Game game;
+
+    private final long ROUND_TIME = 5000;
 
     public void setGame(Client client, Game game) {
         this.client = client;
@@ -57,8 +57,22 @@ class GameThread implements Runnable {
                     }
                     else if(gameID == client.getClientID()) {
                         game.setMyRound(true);
-                        Platform.runLater(() -> game.timer(10000));
+                        Platform.runLater(() -> {
+                            try {
+                                game.timer(ROUND_TIME, true);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
                     }
+                    else
+                        Platform.runLater(() -> {
+                            try {
+                                game.timer(ROUND_TIME, false);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
 
                     //PlayerID = 4 - Map didn't change
                     int playerID = client.getData();
@@ -101,19 +115,11 @@ public class Game extends Application implements Initializable {
     @FXML
     private AnchorPane boardPane1;
     @FXML
-    public AnchorPane boardPane1_shots;
-    @FXML
     private AnchorPane boardPane2;
-    @FXML
-    public AnchorPane boardPane2_shots;
     @FXML
     private AnchorPane boardPane3;
     @FXML
-    public AnchorPane boardPane3_shots;
-    @FXML
     private AnchorPane boardPane4;
-    @FXML
-    public AnchorPane boardPane4_shots;
 
     @FXML
     private Rectangle timer;
@@ -157,7 +163,7 @@ public class Game extends Application implements Initializable {
         backgroundGrid_4.createGameGrid(waterImage, waterDarkerImage, 4, this);
     }
 
-    public void handleGridClick(int quarter, int pos) throws IOException {
+    public synchronized void handleGridClick(int quarter, int pos) throws IOException {
         if(myRound) {
             client.sendData(quarter);
             client.sendData(pos);
@@ -216,20 +222,26 @@ public class Game extends Application implements Initializable {
         new GameThread().setGame(client, this);
     }
 
-    public void timer(long time){
+    public void timer(long time, boolean playerPlay) throws IOException {
         AtomicLong timeLimit= new AtomicLong(time);
-        updateTimerLabel(timeLimit.get());
+        updateTimerLabel(timeLimit.get(), playerPlay);
 
         if(timeline != null)
             timeline.stop();
 
-        timeline = new Timeline(new KeyFrame(Duration.millis(10), event -> timeLimit.set(updateTimerLabel(timeLimit.get()))));
+        timeline = new Timeline(new KeyFrame(Duration.millis(10), event -> {
+            try {
+                timeLimit.set(updateTimerLabel(timeLimit.get(), playerPlay));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }));
 
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
     }
 
-    private long updateTimerLabel(long timeLimit) {
+    private synchronized long updateTimerLabel(long timeLimit, boolean playerPlay) throws IOException {
         timeLimit=timeLimit-10;
 
         long second = timeLimit / 1000;
@@ -239,6 +251,11 @@ public class Game extends Application implements Initializable {
 
         if(timeLimit <= 0) {
             timeline.stop();
+
+            if(playerPlay && myRound) {
+                client.sendData(-1);
+                myRound = false;
+            }
         }
         return timeLimit;
     }
@@ -257,4 +274,3 @@ public class Game extends Application implements Initializable {
         launch();
     }
 }
-

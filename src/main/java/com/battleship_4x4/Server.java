@@ -325,6 +325,16 @@ public class Server extends Application implements Runnable{
                     server.sendData(i, round);
 
                 int quarter = server.getData(round);
+
+                if(quarter == -1) {
+                    for(int i=0; i<MAX_PLAYERS; i++)
+                        server.sendData(i, 4);
+
+                    round = (round + 1) % MAX_PLAYERS;
+
+                    continue;
+                }
+
                 int pos = server.getData(round);
                 quarter = (quarter - 1 + round) % MAX_PLAYERS;
                 System.out.println("Server: Quarter: " + quarter + " Pos: " + pos);
