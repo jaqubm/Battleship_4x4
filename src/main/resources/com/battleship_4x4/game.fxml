@@ -9,7 +9,7 @@
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#9daebf" height="800.0" layoutX="800.0" stroke="BLACK" strokeType="INSIDE" width="400.0" />
       <AnchorPane fx:id="boardPane1" layoutY="400.0" maxHeight="400.0" maxWidth="400.0" prefHeight="400.0" prefWidth="400.0" />
-       <AnchorPane fx:id="boardPane2" layoutX="400.0" layoutY="400.0" maxHeight="400.0" maxWidth="400.0" prefHeight="400.0" prefWidth="400.0" />
+      <AnchorPane fx:id="boardPane2" layoutX="400.0" layoutY="400.0" maxHeight="400.0" maxWidth="400.0" prefHeight="400.0" prefWidth="400.0" />
       <AnchorPane fx:id="boardPane3" maxHeight="400.0" maxWidth="400.0" prefHeight="400.0" prefWidth="400.0" />
       <AnchorPane fx:id="boardPane4" layoutX="400.0" maxHeight="400.0" maxWidth="400.0" prefHeight="400.0" prefWidth="400.0" />
       <Rectangle fx:id="timer" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="180.0" layoutX="880.0" layoutY="620.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="240.0" />

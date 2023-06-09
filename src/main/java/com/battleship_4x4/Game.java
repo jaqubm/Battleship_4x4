@@ -60,8 +60,8 @@ class GameThread implements Runnable {
                         Platform.runLater(() -> game.timer(10000));
                     }
 
-                    int playerID = client.getData();
                     //PlayerID = 4 - Map didn't change
+                    int playerID = client.getData();
                     if(playerID != 4) {
                         int posID = client.getData();
                         int statusID = client.getData();
@@ -101,11 +101,20 @@ public class Game extends Application implements Initializable {
     @FXML
     private AnchorPane boardPane1;
     @FXML
+    public AnchorPane boardPane1_shots;
+    @FXML
     private AnchorPane boardPane2;
+    @FXML
+    public AnchorPane boardPane2_shots;
     @FXML
     private AnchorPane boardPane3;
     @FXML
+    public AnchorPane boardPane3_shots;
+    @FXML
     private AnchorPane boardPane4;
+    @FXML
+    public AnchorPane boardPane4_shots;
+
     @FXML
     private Rectangle timer;
     @FXML

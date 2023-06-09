@@ -273,10 +273,13 @@ public class Server extends Application implements Runnable{
             System.out.println();
         }
 
+        ArrayList<Boolean> playerLost = new ArrayList<>();
+
         //Sending all players new game state - all players are ready
         for(int i=0; i<MAX_PLAYERS; i++) {
             try {
                 server.sendData(i, 0);
+                playerLost.add(false);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -288,22 +291,33 @@ public class Server extends Application implements Runnable{
         //Main game loop on the server side
         while(true) {
             //Checking if there are any ships remaining
-            boolean gameEnd = true;
+            int playersRemaining = 0;
             for(int i=0; i<MAX_PLAYERS; i++) {
-                for(int j = 0; j< MAP_SIZE; j++) {
-                    if(map.get(i).get(j) == 1) {
-                        gameEnd = false;
-                        break;
+                if(!(playerLost.get(i))) {
+                    boolean playerPlay = false;
+                    for(int j = 0; j< MAP_SIZE; j++) {
+                        if(map.get(i).get(j) == 1) {
+                            playerPlay = true;
+                            break;
+                        }
                     }
-                }
 
-                if(!gameEnd)
-                    break;
+                    if(!playerPlay)
+                        playerLost.set(i, true);
+                    else
+                        playersRemaining++;
+                }
             }
 
-            //Ending main game loop on the server side if there is no ships left to destroy
-            if(gameEnd)
+            //Ending main game loop on the server side if there is only one player left
+            if(playersRemaining <= 1)
                 break;
+
+            //Updating current player round if current player already lost a game
+            if(playerLost.get(round)) {
+                round = (round + 1) % MAX_PLAYERS;
+                continue;
+            }
 
             //Sending information to all players about whose round it is
             try {
@@ -327,14 +341,14 @@ public class Server extends Application implements Runnable{
                     mapUpdate = true;
                 }
 
-                for(int i=0; i<MAX_PLAYERS; i++) {
+                for(int i=0; i<MAX_PLAYERS; i++) {  //Sending all players new map update
                     if(mapUpdate) {
                         int curQuarter = (quarter + i) % MAX_PLAYERS;
                         server.sendData(i, curQuarter);
                         server.sendData(i, pos);
                         server.sendData(i, map.get(quarter).get(pos));
                     }
-                    else
+                    else    //Sending info about no updates of the map
                         server.sendData(i, 4);
                 }
             } catch (IOException e) {
