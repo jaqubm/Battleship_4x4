@@ -6,69 +6,74 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
-import java.util.Objects;
+import java.io.IOException;
 
 public class GridHandler extends GridBase {
-
-    Image waterImage = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/water_64.gif")).toString());
-    Image waterDarkerImage = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/water_darker_64.gif")).toString());
-
 
     public GridHandler(double planeWidth, double planeHeight, int gridSize, AnchorPane anchorPane) {
         super(planeWidth, planeHeight, gridSize, anchorPane);
     }
 
-    public void createGrid() {
+    public Rectangle createRectangle(ImagePattern waterImagePattern, ImagePattern waterDarkerImagePattern, int i) {
+        int x = (i % getTilesAcross());
+        int y = (i / getTilesAcross());
+
+        Rectangle rectangle = new Rectangle(x * getGridSize(),y * getGridSize(),getGridSize(),getGridSize());
+
+        if((x + y) % 2 == 0){
+            rectangle.setFill(waterImagePattern);
+        } else {
+            rectangle.setFill(waterDarkerImagePattern);
+        }
+
+        return rectangle;
+    }
+
+    public void createSetupGrid(Image waterImage, Image waterDarkerImage) {
         ImagePattern waterImagePattern = new ImagePattern(waterImage);
         ImagePattern waterDarkerImagePattern = new ImagePattern(waterDarkerImage);
 
         for(int i = 0; i < getTileAmount(); i++){
+            Rectangle rectangle = createRectangle(waterImagePattern, waterDarkerImagePattern, i);
+            getAnchorPane().getChildren().add(rectangle);
+        }
+    }
+
+    public void createGameGrid(Image waterImage, Image waterDarkerImage, int quarter, Game game) {
+        ImagePattern waterImagePattern = new ImagePattern(waterImage);
+        ImagePattern waterDarkerImagePattern = new ImagePattern(waterDarkerImage);
+
+        for(int i = 0; i < getTileAmount(); i++){
+            Rectangle rectangle = createRectangle(waterImagePattern, waterDarkerImagePattern, i);
+            getAnchorPane().getChildren().add(rectangle);
+
             int x = (i % getTilesAcross());
             int y = (i / getTilesAcross());
 
-            Rectangle rectangle = new Rectangle(x * getGridSize(),y * getGridSize(),getGridSize(),getGridSize());
-
-            if((x + y) % 2 == 0){
-                rectangle.setFill(waterImagePattern);
-            } else {
-                rectangle.setFill(waterDarkerImagePattern);
-            }
-            getAnchorPane().getChildren().add(rectangle);
-
             rectangle.setOnMouseClicked((MouseEvent event) -> {
-                double mouseAnchorX = event.getSceneX();
-                double mouseAnchorY = event.getSceneY();
-                int x2=toBoard(mouseAnchorX);
-                int y2=toBoard(mouseAnchorY);
-
-                if(x2<6&&y2<6) {
-
-                    handleGridClick(y, x,3);
-
-                }else if (x2<14&&y2<6) {
-
-                    handleGridClick(y, x,4);
-
-                } else if (x2<6) {
-
-                    handleGridClick(y, x,1);
-
-                } else {
-
-                    handleGridClick(y, x, 2);
-
+                try {
+                    game.handleGridClick(quarter, (y * 8) + x);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
-
             });
         }
+    }
+
+    public void fillRectangle(int id, Image image) {
+        ImagePattern imagePattern = new ImagePattern(image);
+
+        int x = (id % getTilesAcross());
+        int y = (id / getTilesAcross());
+
+        Rectangle rectangle = new Rectangle(x * getGridSize(),y * getGridSize(),getGridSize(),getGridSize());
+        rectangle.setFill(imagePattern);
+
+        getAnchorPane().getChildren().set(id, rectangle);
     }
 
     private int toBoard(double pixel) { //zamiana piksela na współrzędną siatki
         return (int) (pixel + 64 / 2) / 64;
 }
-    private void handleGridClick(int row, int column,int quarter) {
-        // Logika obsługi kliknięcia w siatkę
-        System.out.println("Clicked cell: row=" + row + ", column=" + column + " quarter" + quarter);
-    }
 }
 

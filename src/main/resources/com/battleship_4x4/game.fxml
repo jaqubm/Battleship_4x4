@@ -5,17 +5,38 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="800.0" maxWidth="1200.0" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.battleship_4x4.Game">
+<AnchorPane maxHeight="800.0" maxWidth="1200.0" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.battleship_4x4.Game">
    <children>
-      <AnchorPane fx:id="boardPane1" layoutX="0.0" layoutY="350.0" maxHeight="350.0" maxWidth="350.0" prefHeight="350.0" prefWidth="350.0" />
-       <AnchorPane fx:id="boardPane2" layoutX="350.0" layoutY="350.0" maxHeight="350.0" maxWidth="350.0" prefHeight="350.0" prefWidth="350.0" />
-      <AnchorPane fx:id="boardPane3" layoutX="0" layoutY="0" maxHeight="350.0" maxWidth="350.0" prefHeight="350.0" prefWidth="350.0" />
-      <AnchorPane fx:id="boardPane4" layoutX="350.0" maxHeight="350.0" maxWidth="350.0" prefHeight="350.0" prefWidth="350.0" />
-      <Rectangle fx:id="timer" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="96.0" layoutX="900.0" layoutY="560.0" stroke="BLACK" strokeType="INSIDE" width="128.0" />
-      <Rectangle fx:id="scoreboard" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="480.0" layoutX="841.0" layoutY="7.0" stroke="BLACK" strokeType="INSIDE" width="240.0" />
-      <Label fx:id="timeLabel" layoutX="930.0" layoutY="600.0" text="00:00">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#9daebf" height="800.0" layoutX="800.0" stroke="BLACK" strokeType="INSIDE" width="400.0" />
+      <AnchorPane fx:id="boardPane1" layoutY="400.0" maxHeight="400.0" maxWidth="400.0" prefHeight="400.0" prefWidth="400.0" />
+      <AnchorPane fx:id="boardPane2" layoutX="400.0" layoutY="400.0" maxHeight="400.0" maxWidth="400.0" prefHeight="400.0" prefWidth="400.0" />
+      <AnchorPane fx:id="boardPane3" maxHeight="400.0" maxWidth="400.0" prefHeight="400.0" prefWidth="400.0" />
+      <AnchorPane fx:id="boardPane4" layoutX="400.0" maxHeight="400.0" maxWidth="400.0" prefHeight="400.0" prefWidth="400.0" />
+      <Rectangle fx:id="timer" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="180.0" layoutX="880.0" layoutY="620.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="240.0" />
+      <Rectangle fx:id="scoreboard" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="600.0" layoutX="850.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="300.0" />
+      <Label fx:id="firstPlace" alignment="CENTER" contentDisplay="CENTER" layoutX="862.0" layoutY="170.0" prefHeight="44.0" prefWidth="279.0" text="firstPlace" textAlignment="CENTER">
          <font>
-            <Font size="19.0" />
+            <Font size="32.0" />
+         </font>
+      </Label>
+      <Label fx:id="secondPlace" alignment="CENTER" contentDisplay="CENTER" layoutX="859.0" layoutY="221.0" prefHeight="44.0" prefWidth="281.0" text="secondPlace" textAlignment="CENTER">
+         <font>
+            <Font size="32.0" />
+         </font>
+      </Label>
+      <Label fx:id="thirdPlace" alignment="CENTER" contentDisplay="CENTER" layoutX="856.0" layoutY="273.0" prefHeight="44.0" prefWidth="279.0" text="thirdPlace" textAlignment="CENTER">
+         <font>
+            <Font size="32.0" />
+         </font>
+      </Label>
+      <Label fx:id="fourthPlace" alignment="CENTER" contentDisplay="CENTER" layoutX="858.0" layoutY="328.0" prefHeight="44.0" prefWidth="283.0" text="fourthPlace" textAlignment="CENTER">
+         <font>
+            <Font size="32.0" />
+         </font>
+      </Label>
+      <Label fx:id="timeLabel" layoutX="930.0" layoutY="675.0" text="00:00">
+         <font>
+            <Font size="49.0" />
          </font>
       </Label>
    </children>

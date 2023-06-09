@@ -2,9 +2,12 @@ package com.battleship_4x4;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -17,9 +20,11 @@ import java.net.Inet4Address;
 /**
  * MainMenu Class is main-menu.fxml controller
  */
-public class MainMenu extends Application
-{
+public class MainMenu extends Application implements Runnable {
 
+    Client client;
+
+    ActionEvent event;
 
     @FXML
     private AnchorPane waitingForPlayers;
@@ -42,14 +47,16 @@ public class MainMenu extends Application
     /**
      * Function checking if TextFields aren't empty and calling Client constructor
      */
-    public void onJoinButtonClick() {
+    public void onJoinButtonClick(ActionEvent event) {
         errorLabel.setText("");
+
+        boolean test = true;
 
         if(userNameTextField.getText().equals("")) {
             errorLabel.setText("Username can't be empty!");
         }
         else {
-            if(IPTextField.getText().equals("")) {
+            if(IPTextField.getText().equals("") && !test) {
                 errorLabel.setText("IP can't be empty!");
             }
             else {
@@ -57,8 +64,15 @@ public class MainMenu extends Application
                     String username= userNameTextField.getText();
                     Inet4Address ipAddress= (Inet4Address) Inet4Address.getByName(IPTextField.getText());
 
-                    new Client(username, ipAddress, this);
+                    client = new Client(username, ipAddress);
                     System.out.println("Connected");
+
+                    switchToWaitingForPlayers();
+                    this.event = event;
+
+                    Thread mainMenuThread = new Thread(this);
+                    mainMenuThread.start();
+
                 } catch(IOException err) {
                     errorLabel.setText("Something is wrong with IP");
                 }
@@ -104,6 +118,19 @@ public class MainMenu extends Application
         waitingForPlayers.setVisible(true);
     }
 
+    public void switchToShipSetup() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("ship-setup.fxml"));
+        Parent root = loader.load();
+
+        ShipSetup shipSetup = loader.getController();
+        shipSetup.setClient(client);
+
+        Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
     /**
      * Launching Java FX app
      * @param stage Stage
@@ -133,5 +160,50 @@ public class MainMenu extends Application
 
     public static void main(String[] args) {
         launch();
+    }
+
+    /**
+     * Main menu loop while waiting for all players to connect
+     */
+    @Override
+    public void run() {
+        while(true) {
+            try {
+                int gameID = client.getData();
+                int playerID = client.getData();
+                int posID = client.getData();
+
+                System.out.println("Client: gameID: " + gameID);
+
+                if(gameID == 0) {   //gameID = 0 - Update number of connected players
+                    Platform.runLater(() -> updateConnectedPlayers(playerID, posID));
+                }
+                else if(gameID == 1) {  //gameID = 1 - Switch to the ShipSetup scene
+                    Platform.runLater(() -> {
+                        try {
+                            switchToShipSetup();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+
+                    break;
+                }
+            } catch (IOException err) {
+                try {
+                    client.closeConnection();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                Platform.runLater(() -> {
+                    try {
+                        stop();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+                break;
+            }
+        }
     }
 }

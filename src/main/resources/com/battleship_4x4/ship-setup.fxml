@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.battleship_4x4.ShipSetup">
+   <children>
+      <AnchorPane fx:id="boardPane" layoutX="68.0" layoutY="40.0" prefHeight="512.0" prefWidth="512.0">
+      </AnchorPane>
+      <Button layoutX="648.0" layoutY="520.0" mnemonicParsing="false" onAction="#onReadyButtonClick" prefHeight="64.0" prefWidth="167.0" text="Ready">
+         <font>
+            <Font size="29.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

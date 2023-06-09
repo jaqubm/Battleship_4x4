@@ -1,7 +1,5 @@
 package com.battleship_4x4;
 
-import javafx.application.Platform;
-
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -12,7 +10,7 @@ import java.net.Socket;
 /**
  * Client Class to take care of communication with Server and implementing game logic
  */
-public class Client implements Runnable {
+public class Client {
 
     private int clientID;
     private String clientName;
@@ -20,18 +18,16 @@ public class Client implements Runnable {
     private DataInputStream input = null;
     private DataOutputStream output = null;
 
-    private MainMenu mainMenu;
-
     /**
      * Constructor of Client Class creating connection with Server and DataStreams to contact with it
      * @param name String containing clientName
      * @param addressIP Inet4Address containing IP address to which it will try to connect
-     * @param mainMenu MainMenu Class object to control and/or call functions from this class
      * @throws IOException Error
      */
-    Client(String name, Inet4Address addressIP, MainMenu mainMenu) throws IOException {
+    Client(String name, Inet4Address addressIP) throws IOException {
         try {
-            this.socket = new Socket(addressIP, 5000);
+            this.socket = new Socket(Inet4Address.getByName(null), 5000);
+            //this.socket = new Socket(addressIP, 5000);
 
             this.input = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
             this.output = new DataOutputStream(socket.getOutputStream());
@@ -41,12 +37,6 @@ public class Client implements Runnable {
             this.clientID = getData();
 
             System.out.println("Player ID: " + clientID);
-
-            this.mainMenu = mainMenu;
-            this.mainMenu.switchToWaitingForPlayers();
-
-            Thread clientThread = new Thread(this);
-            clientThread.start();
         } catch (IOException err) {
             closeConnection();
             err.printStackTrace();
@@ -62,6 +52,10 @@ public class Client implements Runnable {
         output.close();
 
         socket.close();
+    }
+
+    public String getName() throws IOException {
+        return input.readUTF();
     }
 
     /**
@@ -82,37 +76,11 @@ public class Client implements Runnable {
         return input.readInt();
     }
 
-    /**
-     * Main game loop on the Client side
-     */
-    @Override
-    public void run() {
-        while(true) {
-            try {
-                int gameID = getData();
-                int playerID = getData();
-                int posID = getData();
+    public int getClientID() {
+        return clientID;
+    }
 
-                //Change IF statements for SWITCH!
-                //Implement another stages of game HERE!
-                if(gameID == 0) {
-                    Platform.runLater(() -> mainMenu.updateConnectedPlayers(playerID, posID));
-                }
-            } catch (IOException err) {
-                try {
-                    closeConnection();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                Platform.runLater(() -> {
-                    try {
-                        mainMenu.stop();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
-                break;
-            }
-        }
+    public String getClientName() {
+        return clientName;
     }
 }
