@@ -16,8 +16,7 @@ import javafx.stage.Stage;
 import javafx.scene.shape.Rectangle;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
 import javafx.animation.Animation;
@@ -27,11 +26,10 @@ import javafx.util.Duration;
 
 class GameThread implements Runnable {
 
-    Client client;
+    Client client;  //Communication with server
 
-    Game game;
-
-    private final long ROUND_TIME = 5000;
+    Game game;  //Game Controller
+    private final long ROUND_TIME = 50000;   //Round time in ms
 
     public void setGame(Client client, Game game) {
         this.client = client;
@@ -47,6 +45,14 @@ class GameThread implements Runnable {
         try {
             if(client.getData() == 0) {
                 System.out.println("All players are ready!");
+
+                int MAX_PLAYERS = 4;
+                for(int i = 0; i<MAX_PLAYERS; i++) {
+                    String name = client.getName();
+                    game.addToScoreBoard(name);
+                }
+
+                Platform.runLater(() -> game.displayScoreBoard());
 
                 while(true) {
                     int gameID = client.getData();
@@ -84,8 +90,10 @@ class GameThread implements Runnable {
 
                         if(statusID == 2)
                             Platform.runLater(() -> game.setShot(true, playerID, posID));
-                        else if(statusID == 3)
+                        else if(statusID == 3) {
                             Platform.runLater(() -> game.setShot(false, playerID, posID));
+                            Platform.runLater(() -> game.updateScoreBoard(gameID));
+                        }
                     }
                 }
             }
@@ -101,8 +109,11 @@ public class Game extends Application implements Initializable {
     Client client;
     private boolean myRound = false;
 
-    int gridSize;
-    Timeline timeline;
+    private ArrayList<String> scoreBoardNames;
+    private ArrayList<Integer> scoreBoardPoints;
+
+    private int gridSize;
+    private Timeline timeline;
 
     Image missedShot = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/board/marker_miss_64.png")).toString());
     Image hitShot = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/board/marker_hit_64.png")).toString());
@@ -125,6 +136,14 @@ public class Game extends Application implements Initializable {
     private Rectangle timer;
     @FXML
     private Rectangle scoreboard;
+    @FXML
+    private Label firstPlace;
+    @FXML
+    private Label secondPlace;
+    @FXML
+    private Label thirdPlace;
+    @FXML
+    private Label fourthPlace;
     @FXML
     private Label timeLabel;
 
@@ -152,15 +171,18 @@ public class Game extends Application implements Initializable {
 
         waterImage = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/water_yellow_64.gif")).toString());
         waterDarkerImage = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/water_darker_yellow_64.gif")).toString());
-        backgroundGrid_2.createGameGrid(waterImage, waterDarkerImage, 2, this);
+        backgroundGrid_2.createGameGrid(waterImage, waterDarkerImage, 1, this);
 
         waterImage = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/water_green_64.gif")).toString());
         waterDarkerImage = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/water_darker_green_64.gif")).toString());
-        backgroundGrid_3.createGameGrid(waterImage, waterDarkerImage, 3, this);
+        backgroundGrid_3.createGameGrid(waterImage, waterDarkerImage, 2, this);
 
         waterImage = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/water_red_64.gif")).toString());
         waterDarkerImage = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/water_darker_red_64.gif")).toString());
-        backgroundGrid_4.createGameGrid(waterImage, waterDarkerImage, 4, this);
+        backgroundGrid_4.createGameGrid(waterImage, waterDarkerImage, 3, this);
+
+        scoreBoardNames = new ArrayList<>();
+        scoreBoardPoints = new ArrayList<>();
     }
 
     public synchronized void handleGridClick(int quarter, int pos) throws IOException {
@@ -215,6 +237,26 @@ public class Game extends Application implements Initializable {
         }
 
         boardPane1.getChildren().add(ship.getRectangle());
+    }
+
+    public void addToScoreBoard(String name) {
+        this.scoreBoardNames.add(name);
+        this.scoreBoardPoints.add(0);
+    }
+
+    public void updateScoreBoard(int id) {
+        scoreBoardPoints.set(id, scoreBoardPoints.get(id) + 1);
+        for(int i=0; i<scoreBoardNames.size(); i++) {
+            System.out.println("Client: Player: " + scoreBoardNames.get(i) + " Points: " + scoreBoardPoints.get(i));
+        }
+        displayScoreBoard();
+    }
+
+    public void displayScoreBoard() {
+        firstPlace.setText(scoreBoardNames.get(0) + ": " + scoreBoardPoints.get(0));
+        secondPlace.setText(scoreBoardNames.get(1) + ": " + scoreBoardPoints.get(1));
+        thirdPlace.setText(scoreBoardNames.get(2) + ": " + scoreBoardPoints.get(2));
+        fourthPlace.setText(scoreBoardNames.get(3) + ": " + scoreBoardPoints.get(3));
     }
 
     public void setGameThread(Client client) {

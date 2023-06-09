@@ -57,6 +57,10 @@ class ServerBackend {
         clientOutput.get(id).writeInt(id);
     }
 
+    public void sendName(int id, String name) throws IOException {
+        clientOutput.get(id).writeUTF(name);
+    }
+
     /**
      * Function to send message to Client
      * @param id Current Client ID
@@ -102,7 +106,7 @@ class ServerBackend {
 
 public class Server extends Application implements Runnable{
 
-    private final int MAX_PLAYERS = 2;
+    private final int MAX_PLAYERS = 4;
     private int playersConnected = 0;
     private ServerBackend server;
 
@@ -279,6 +283,9 @@ public class Server extends Application implements Runnable{
         for(int i=0; i<MAX_PLAYERS; i++) {
             try {
                 server.sendData(i, 0);
+                for(int j=0; j<MAX_PLAYERS; j++)
+                    server.sendName(i, server.getClientName(j));
+
                 playerLost.add(false);
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -336,7 +343,7 @@ public class Server extends Application implements Runnable{
                 }
 
                 int pos = server.getData(round);
-                quarter = (quarter - 1 + round) % MAX_PLAYERS;
+                quarter = (quarter + round) % MAX_PLAYERS;
                 System.out.println("Server: Quarter: " + quarter + " Pos: " + pos);
 
                 boolean mapUpdate = false;
@@ -353,7 +360,7 @@ public class Server extends Application implements Runnable{
 
                 for(int i=0; i<MAX_PLAYERS; i++) {  //Sending all players new map update
                     if(mapUpdate) {
-                        int curQuarter = (quarter + i) % MAX_PLAYERS;
+                        int curQuarter = (quarter - i + MAX_PLAYERS) % MAX_PLAYERS;
                         server.sendData(i, curQuarter);
                         server.sendData(i, pos);
                         server.sendData(i, map.get(quarter).get(pos));

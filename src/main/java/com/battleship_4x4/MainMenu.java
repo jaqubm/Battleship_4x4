@@ -52,7 +52,7 @@ public class MainMenu extends Application implements Runnable {
 
         boolean test = true;
 
-        if(userNameTextField.getText().equals("") && !test) {
+        if(userNameTextField.getText().equals("")) {
             errorLabel.setText("Username can't be empty!");
         }
         else {

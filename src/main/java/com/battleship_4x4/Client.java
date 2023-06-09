@@ -54,6 +54,10 @@ public class Client {
         socket.close();
     }
 
+    public String getName() throws IOException {
+        return input.readUTF();
+    }
+
     /**
      * Function to send message to Server
      * @param data Integer that will be sent to Server
