@@ -42,24 +42,25 @@ public class ShipSetup extends Application implements Initializable {
 
         Ship ship2 = new Ship(gridSize, 2);
         ships.add(ship2);
+        ship2.move(15, 2);
         boardPane.getChildren().add(ship2.getRectangle());
         draggableMakerGrid.makeDraggable(ship2, ships);
 
         Ship ship3 = new Ship(gridSize, 3);
         ships.add(ship3);
-        ship3.move(0, 1);
+        ship3.move(9, 4);
         boardPane.getChildren().add(ship3.getRectangle());
         draggableMakerGrid.makeDraggable(ship3, ships);
 
         Ship ship4 = new Ship(gridSize, 4);
         ships.add(ship4);
-        ship4.move(0, 2);
+        ship4.move(13, 4);
         boardPane.getChildren().add(ship4.getRectangle());
         draggableMakerGrid.makeDraggable(ship4, ships);
 
         Ship ship5 = new Ship(gridSize, 5);
         ships.add(ship5);
-        ship5.move(0, 3);
+        ship5.move(9, 2);
         boardPane.getChildren().add(ship5.getRectangle());
         draggableMakerGrid.makeDraggable(ship5, ships);
     }
@@ -69,6 +70,15 @@ public class ShipSetup extends Application implements Initializable {
     }
 
     public void onReadyButtonClick(ActionEvent event) throws IOException {
+        for (Ship tempShip: ships){
+            for (int i = 0; i < tempShip.getSize(); i++){
+                if ((tempShip.pointList.get(i).getX() < 0 || tempShip.pointList.get(i).getX() > 7) ||
+                        (tempShip.pointList.get(i).getY() < 0 || tempShip.pointList.get(i).getY() > 7)){
+                    return;
+                }
+            }
+        }
+
         for (Ship tempShip: ships)
             for (int i = 0; i < tempShip.getSize(); i++)
                 client.sendData((int) ((tempShip.pointList.get(i).getY() * 8) + tempShip.pointList.get(i).getX()));
