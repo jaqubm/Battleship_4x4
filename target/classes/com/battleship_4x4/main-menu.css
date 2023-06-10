@@ -27,7 +27,6 @@
 }
 
 .exitButton:hover {
-    -fx-border-color: white;
-
+    -fx-background-color: white 0.25;
     -fx-opacity: 0.25;
 }

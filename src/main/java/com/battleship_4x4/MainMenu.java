@@ -50,13 +50,12 @@ public class MainMenu extends Application implements Runnable {
     public void onJoinButtonClick(ActionEvent event) {
         errorLabel.setText("");
 
-        boolean test = true;
 
         if(userNameTextField.getText().equals("")) {
             errorLabel.setText("Username can't be empty!");
         }
         else {
-            if(IPTextField.getText().equals("") && !test) {
+            if(IPTextField.getText().equals("")) {
                 errorLabel.setText("IP can't be empty!");
             }
             else {
