@@ -17,6 +17,17 @@
     -fx-background-color: none;
 }
 
+.otherButton:hover {
+    -fx-background-image: url('sprites/UI/button_smaller_hover.png');
+    -fx-background-size: 130;
+}
+
 .exitButton {
     -fx-background-color: none;
+}
+
+.exitButton:hover {
+    -fx-border-color: white;
+
+    -fx-opacity: 0.25;
 }
