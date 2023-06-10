@@ -6,6 +6,10 @@
     -fx-background-image: url('sprites/gifs/ship_menu_NEW_64.gif');
 }
 
+.background {
+    -fx-background-image: url('sprites/UI/background_setup.png');
+}
+
 .button {
     -fx-background-image: url('sprites/UI/button_smaller.png');
     -fx-background-size: 180;
