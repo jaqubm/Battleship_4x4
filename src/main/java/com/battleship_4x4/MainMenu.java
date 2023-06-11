@@ -50,7 +50,6 @@ public class MainMenu extends Application implements Runnable {
     public void onJoinButtonClick(ActionEvent event) {
         errorLabel.setText("");
 
-
         if(userNameTextField.getText().equals("")) {
             errorLabel.setText("Username can't be empty!");
         }
@@ -117,6 +116,10 @@ public class MainMenu extends Application implements Runnable {
         waitingForPlayers.setVisible(true);
     }
 
+    /**
+     * Changing current view to ShipSetup
+     * @throws IOException Error
+     */
     public void switchToShipSetup() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ship-setup.fxml"));
         Parent root = loader.load();

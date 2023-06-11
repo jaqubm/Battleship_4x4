@@ -7,17 +7,16 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="800.0" prefWidth="1200.0" styleClass="background" stylesheets="@game-over.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.battleship_4x4.GameOver">
    <children>
       <AnchorPane layoutX="450.0" layoutY="350.0" prefHeight="450.0" prefWidth="300.0" styleClass="board" stylesheets="@game-over.css">
          <children>
-            <Label layoutX="98.0" layoutY="14.0" text="Winner">
+            <Label fx:id="winnerLabel" layoutX="98.0" layoutY="14.0" text="Winner">
                <font>
                   <Font name="System Bold" size="30.0" />
                </font>
             </Label>
-            <Label fx:id="winnerLabel" layoutX="97.0" layoutY="198.0" text="Player">
+            <Label fx:id="winnerLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="198.0" prefHeight="53.0" prefWidth="272.0" text="Player">
                <font>
                   <Font name="System Bold" size="36.0" />
                </font>
@@ -36,7 +35,7 @@
             </DropShadow>
          </effect>
       </Label>
-      <Button fx:id="menuButton" layoutX="14.0" layoutY="726.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="120.0" stylesheets="@game-over.css" text="Main Menu">
+      <Button fx:id="menuButton" layoutX="14.0" layoutY="726.0" mnemonicParsing="false" onAction="#mainMenuButton" prefHeight="60.0" prefWidth="120.0" stylesheets="@game-over.css" text="Main Menu">
          <font>
             <Font name="System Bold" size="17.0" />
          </font>

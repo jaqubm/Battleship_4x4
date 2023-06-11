@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class ShipSetup extends Application implements Initializable {
+public class ShipSetup implements Initializable {
 
     Client client;
 
@@ -94,19 +94,5 @@ public class ShipSetup extends Application implements Initializable {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
-    }
-
-    @Override
-    public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(ShipSetup.class.getResource("ship-setup.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1200, 800);
-        stage.setTitle("Setup");
-        stage.setResizable(false);
-        stage.setScene(scene);
-        stage.show();
-    }
-
-    public static void main(String[] args) {
-        launch();
     }
 }

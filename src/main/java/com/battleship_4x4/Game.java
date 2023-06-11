@@ -2,14 +2,17 @@ package com.battleship_4x4;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
@@ -29,7 +32,7 @@ class GameThread implements Runnable {
     Client client;  //Communication with server
 
     Game game;  //Game Controller
-    private final long ROUND_TIME = 5000;   //Round time in ms
+    private final long ROUND_TIME = 7000;   //Round time in ms
 
     public void setGame(Client client, Game game) {
         this.client = client;
@@ -57,6 +60,10 @@ class GameThread implements Runnable {
                 while(true) {
                     int gameID = client.getData();
                     System.out.println("Client: gameID: " + gameID);
+
+                    //Updating indicator of current player round
+                    if(gameID != -1)
+                        Platform.runLater(() -> game.updateRound(gameID));
 
                     if(gameID == -1) {
                         break;
@@ -96,15 +103,32 @@ class GameThread implements Runnable {
                         }
                     }
                 }
+
+                //Closing connection with Server and changing view to GameOver view
+                client.closeConnection();
+
+                Platform.runLater(() -> {
+                    try {
+                        game.switchToGameOver();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
             }
         } catch (IOException e) {
+            try {
+                client.closeConnection();
+                System.out.println("Connection with the Server has been lost!");
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
             throw new RuntimeException(e);
         }
     }
 }
 
 
-public class Game extends Application implements Initializable {
+public class Game implements Initializable {
 
     Client client;
     private boolean myRound = false;
@@ -261,6 +285,22 @@ public class Game extends Application implements Initializable {
         displayScoreBoard();
     }
 
+    public void updateRound(int id) {
+        firstPlace.setTextFill(Color.BLACK);
+        secondPlace.setTextFill(Color.BLACK);
+        thirdPlace.setTextFill(Color.BLACK);
+        fourthPlace.setTextFill(Color.BLACK);
+
+        if(id == 0)
+            firstPlace.setTextFill(Color.GREEN);
+        else if(id == 1)
+            secondPlace.setTextFill(Color.GREEN);
+        else if(id == 2)
+            thirdPlace.setTextFill(Color.GREEN);
+        else if(id == 3)
+            fourthPlace.setTextFill(Color.GREEN);
+    }
+
     public void displayScoreBoard() {
         firstPlace.setText(scoreBoardNames.get(0) + ": " + scoreBoardPoints.get(0));
         secondPlace.setText(scoreBoardNames.get(1) + ": " + scoreBoardPoints.get(1));
@@ -311,17 +351,25 @@ public class Game extends Application implements Initializable {
         return timeLimit;
     }
 
-    @Override
-    public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Game.class.getResource("game.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1200, 800);
-        stage.setTitle("Battleship4x4");
-        stage.setResizable(false);
+    public void switchToGameOver() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("game-over.fxml"));
+        Parent root = loader.load();
+
+        int max = 0;
+        String name = "";
+        for(int i=0; i<scoreBoardNames.size(); i++) {
+            if(scoreBoardPoints.get(i) > max) {
+                max = scoreBoardPoints.get(i);
+                name = scoreBoardNames.get(i);
+            }
+        }
+
+        GameOver gameOver = loader.getController();
+        gameOver.setPlayerWon(name);
+
+        Stage stage = (Stage) timeLabel.getScene().getWindow();
+        Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
-    }
-
-    public static void main(String[] args) {
-        launch();
     }
 }
