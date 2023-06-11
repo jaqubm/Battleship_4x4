@@ -30,3 +30,9 @@
     -fx-background-color: white 0.25;
     -fx-opacity: 0.25;
 }
+
+.loading {
+    -fx-background-image: url('sprites/gifs/radar.gif');
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+}
