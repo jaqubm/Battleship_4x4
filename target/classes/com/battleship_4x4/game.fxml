@@ -9,7 +9,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="800.0" maxWidth="1200.0" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.battleship_4x4.Game">
+<AnchorPane maxHeight="800.0" maxWidth="1200.0" prefHeight="800.0" prefWidth="1200.0" styleClass="background" stylesheets="@game.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.battleship_4x4.Game">
    <children>
       <BorderPane layoutX="-21.0" layoutY="-20.0" prefHeight="836.0" prefWidth="836.0" styleClass="board" stylesheets="@game.css" />
       <GridPane layoutX="25.0" layoutY="25.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="752.0" prefWidth="752.0">
@@ -28,7 +28,6 @@
             <AnchorPane fx:id="boardPane4" maxHeight="400.0" maxWidth="400.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="376.0" prefWidth="376.0" GridPane.columnIndex="1" />
          </children>
       </GridPane>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#9daebf" height="800.0" layoutX="800.0" stroke="BLACK" strokeType="INSIDE" width="400.0" />
       <Rectangle fx:id="timer" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="180.0" layoutX="880.0" layoutY="620.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="timer" width="240.0" />
       <Rectangle fx:id="scoreboard" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="600.0" layoutX="850.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="300.0" />
       <Label fx:id="firstPlace" alignment="CENTER" contentDisplay="CENTER" layoutX="862.0" layoutY="170.0" prefHeight="44.0" prefWidth="279.0" text="firstPlace" textAlignment="CENTER">
@@ -54,6 +53,11 @@
       <Label fx:id="timeLabel" layoutX="930.0" layoutY="675.0" text="00:00">
          <font>
             <Font name="System Bold" size="44.0" />
+         </font>
+      </Label>
+      <Label layoutX="945.0" layoutY="17.0" text="SCORES">
+         <font>
+            <Font name="System Bold" size="30.0" />
          </font>
       </Label>
    </children>

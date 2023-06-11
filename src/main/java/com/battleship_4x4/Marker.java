@@ -16,6 +16,7 @@ public class Marker {
     Image miss = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/board/marker_miss_64.png")).toString());
     Image hit = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/board/marker_hit_64.png")).toString());
     Image explosion = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/explosion_with_marker_64.gif")).toString());
+    Image explosion_no_marker = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/explosion_64.gif")).toString());
     Image miss_gif = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/marker_miss_anim_64.gif")).toString());
     Image fire = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/fire_64.gif")).toString());
 
@@ -46,7 +47,13 @@ public class Marker {
             timeline.play();
         }
         else {
-            rectangle.setFill(new ImagePattern(fire));
+            rectangle.setFill(new ImagePattern(explosion_no_marker));
+
+            Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1.7)));
+            timeline.setOnFinished(e2 -> {
+                rectangle.setFill(new ImagePattern(fire));
+            });
+            timeline.play();
         }
     }
 
