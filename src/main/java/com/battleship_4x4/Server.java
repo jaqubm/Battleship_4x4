@@ -381,9 +381,8 @@ public class Server extends Application implements Runnable{
             }
         }
 
-        //Closing server after game
         try {
-            stop();
+            server.closeServer();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
