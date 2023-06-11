@@ -1,0 +1,40 @@
+.vbox {
+    -fx-background-image:url('sprites/UI/background.png');
+}
+
+.mainMenu {
+    -fx-background-image:url('sprites/UI/menu.png');
+    -fx-background-size: 430 430;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+}
+
+.otherButton {
+    -fx-background-image: url('sprites/UI/button_smaller.png');
+    -fx-background-size: 140;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+    -fx-background-color: none;
+}
+
+.otherButton:hover {
+    -fx-background-image: url('sprites/UI/button_smaller_hover.png');
+    -fx-background-size: 140;
+}
+
+.exitButton {
+    -fx-background-color: none;
+}
+
+.exitButton:hover {
+    -fx-background-image: url('sprites/UI/hover_effect.png');
+    -fx-background-size: 160;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+}
+
+.loading {
+    -fx-background-image: url('sprites/gifs/radar.gif');
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+}

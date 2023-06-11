@@ -1,16 +1,26 @@
 package com.battleship_4x4;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.Node;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.transform.Rotate;
+import javafx.util.Duration;
 
 import java.util.List;
+import java.util.Objects;
 
 public class DraggableMakerGrid extends GridBase{
 
     private double mouseAnchorX;
     private double mouseAnchorY;
     private boolean allowRotation = true;
+    Image ship2red = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/ships/ship_2_red_64.png")).toString());
+    Image ship3red = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/ships/ship_3_red_64.png")).toString());
+    Image ship4red = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/ships/ship_4_red_64.png")).toString());
+    Image ship5red = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/ships/ship_5_red_64.png")).toString());
 
     public DraggableMakerGrid(double planeWidth, double planeHeight, int gridSize, AnchorPane anchorPane) {
         super(planeWidth, planeHeight, gridSize, anchorPane);
@@ -36,7 +46,12 @@ public class DraggableMakerGrid extends GridBase{
             int y0 = toBoard(ship.getBoardY());
 
             ship.move(newX, newY);
-            if (collisionCheck(ship, ships) || !inBoardCheck(ship)) ship.move(x0, y0);
+            if (collisionCheck(ship, ships) || !inBoardCheck(ship))
+            {
+                ship.move(x0, y0);
+                error(ship);
+            }
+
             allowRotation = true;
         });
 
@@ -54,6 +69,7 @@ public class DraggableMakerGrid extends GridBase{
                 else {
                     ship.setDirection(!ship.getDirection());
                     ship.move(toBoard(node.getLayoutX()),toBoard(node.getLayoutY()));
+                    error(ship);
                 }
             }
         });
@@ -87,6 +103,22 @@ public class DraggableMakerGrid extends GridBase{
                     (ship.pointList.get(i).getY() > 7 || ship.pointList.get(i).getY() < 0)) return false;
         }
         return true;
+    }
+
+    public void error(Ship ship) {
+        if (ship.getSize() == 2) ship.getRectangle().setFill(new ImagePattern(ship2red));
+        if (ship.getSize() == 3) ship.getRectangle().setFill(new ImagePattern(ship3red));
+        if (ship.getSize() == 4) ship.getRectangle().setFill(new ImagePattern(ship4red));
+        if (ship.getSize() == 5) ship.getRectangle().setFill(new ImagePattern(ship5red));
+
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.3)));
+        timeline.setOnFinished(e2 -> {
+            if (ship.getSize() == 2) ship.getRectangle().setFill(new ImagePattern(ship.ship2Image));
+            if (ship.getSize() == 3) ship.getRectangle().setFill(new ImagePattern(ship.ship3Image));
+            if (ship.getSize() == 4) ship.getRectangle().setFill(new ImagePattern(ship.ship4Image));
+            if (ship.getSize() == 5) ship.getRectangle().setFill(new ImagePattern(ship.ship5Image));
+        });
+        timeline.play();
     }
 
     private int toBoard(double pixel) { //zamiana piksela na współrzędną siatki

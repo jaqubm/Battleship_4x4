@@ -23,9 +23,9 @@
                </font>
             </Label>
             <TextField fx:id="serverIPTextField" alignment="CENTER" layoutX="86.0" layoutY="174.0" AnchorPane.leftAnchor="86.0" AnchorPane.rightAnchor="85.0" />
-            <Button layoutX="76.0" layoutY="228.0" mnemonicParsing="false" onAction="#startServer" text="Start Server" AnchorPane.leftAnchor="76.0" AnchorPane.rightAnchor="74.0">
+            <Button layoutX="76.0" layoutY="228.0" mnemonicParsing="false" onAction="#startServer" prefHeight="63.0" prefWidth="170.0" styleClass="otherButton" stylesheets="@main-menu.css" text="Start Server" AnchorPane.leftAnchor="76.0" AnchorPane.rightAnchor="74.0">
                <font>
-                  <Font size="24.0" />
+                  <Font name="System Bold" size="18.0" />
                </font>
             </Button>
             <Label fx:id="badServerIP" alignment="CENTER" layoutY="279.0" prefHeight="17.0" prefWidth="320.0" textAlignment="CENTER" textFill="RED" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
@@ -33,6 +33,7 @@
       </AnchorPane>
       <AnchorPane fx:id="serverMainView" prefHeight="320.0" prefWidth="320.0" visible="false">
          <children>
+            <AnchorPane layoutX="110.0" layoutY="200.0" prefHeight="100.0" prefWidth="100.0" styleClass="loading" stylesheets="@main-menu.css" />
             <Label fx:id="gameStatus" alignment="CENTER" layoutY="143.0" prefWidth="320.0">
                <font>
                   <Font name="System Bold" size="24.0" />
