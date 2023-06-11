@@ -46,7 +46,7 @@ class GameThread implements Runnable {
             if(client.getData() == 0) {
                 System.out.println("All players are ready!");
 
-                int MAX_PLAYERS = 2;
+                int MAX_PLAYERS = 4;
                 for(int i = 0; i<MAX_PLAYERS; i++) {
                     String name = client.getName();
                     game.addToScoreBoard(name);
@@ -196,7 +196,7 @@ public class Game extends Application implements Initializable {
 
     public void setShot(boolean missed, int quarter, int pos) {
         if(missed) {
-            Marker marker = new Marker(pos, true, gridSize);
+            Marker marker = new Marker(pos, 1, gridSize);
             if(quarter == 0)
                 boardPane1.getChildren().add(marker.getRectangle());
             else if(quarter == 1)
@@ -207,15 +207,25 @@ public class Game extends Application implements Initializable {
                 boardPane4.getChildren().add(marker.getRectangle());
         }
         else {
-            Marker marker = new Marker(pos, false, gridSize);
-            if(quarter == 0)
+            Marker marker;
+            if(quarter == 0) {
+                marker = new Marker(pos, 3, gridSize);
                 boardPane1.getChildren().add(marker.getRectangle());
-            else if(quarter == 1)
+            }
+            else if(quarter == 1){
+                marker = new Marker(pos, 2, gridSize);
                 boardPane2.getChildren().add(marker.getRectangle());
-            else if(quarter == 2)
+            }
+            else if(quarter == 2){
+                marker = new Marker(pos, 2, gridSize);
                 boardPane3.getChildren().add(marker.getRectangle());
+            }
             else if(quarter == 3)
+            {
+                marker = new Marker(pos, 2, gridSize);
                 boardPane4.getChildren().add(marker.getRectangle());
+            }
+
         }
     }
 

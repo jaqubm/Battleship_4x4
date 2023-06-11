@@ -17,8 +17,9 @@ public class Marker {
     Image hit = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/board/marker_hit_64.png")).toString());
     Image explosion = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/explosion_with_marker_64.gif")).toString());
     Image miss_gif = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/marker_miss_anim_64.gif")).toString());
+    Image fire = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/gifs/fire_64.gif")).toString());
 
-    public Marker(int pos, boolean type, int gridSize){
+    public Marker(int pos, int type, int gridSize){
         rectangle = new Rectangle(gridSize, gridSize);
         this.gridSize = gridSize;
 
@@ -27,7 +28,7 @@ public class Marker {
 
         move(x, y);
 
-        if (type){
+        if (type == 1){
             rectangle.setFill(new ImagePattern(miss_gif));
             Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.2)));
             timeline.setOnFinished(e -> {
@@ -35,7 +36,7 @@ public class Marker {
             });
             timeline.play();
         }
-        else {
+        else if (type == 2) {
             rectangle.setFill(new ImagePattern(explosion));
 
             Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1.7)));
@@ -43,6 +44,9 @@ public class Marker {
                 rectangle.setFill(new ImagePattern(hit));
             });
             timeline.play();
+        }
+        else {
+            rectangle.setFill(new ImagePattern(fire));
         }
     }
 

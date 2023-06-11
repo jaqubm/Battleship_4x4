@@ -106,7 +106,7 @@ class ServerBackend {
 
 public class Server extends Application implements Runnable{
 
-    private final int MAX_PLAYERS = 2;
+    private final int MAX_PLAYERS = 4;
     private int playersConnected = 0;
     private ServerBackend server;
 
