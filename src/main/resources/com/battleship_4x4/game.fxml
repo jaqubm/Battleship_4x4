@@ -29,7 +29,7 @@
          </children>
       </GridPane>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#9daebf" height="800.0" layoutX="800.0" stroke="BLACK" strokeType="INSIDE" width="400.0" />
-      <Rectangle fx:id="timer" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="180.0" layoutX="880.0" layoutY="620.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="240.0" />
+      <Rectangle fx:id="timer" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="180.0" layoutX="880.0" layoutY="620.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="timer" width="240.0" />
       <Rectangle fx:id="scoreboard" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="600.0" layoutX="850.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="300.0" />
       <Label fx:id="firstPlace" alignment="CENTER" contentDisplay="CENTER" layoutX="862.0" layoutY="170.0" prefHeight="44.0" prefWidth="279.0" text="firstPlace" textAlignment="CENTER">
          <font>

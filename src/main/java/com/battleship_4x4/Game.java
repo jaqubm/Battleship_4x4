@@ -46,7 +46,7 @@ class GameThread implements Runnable {
             if(client.getData() == 0) {
                 System.out.println("All players are ready!");
 
-                int MAX_PLAYERS = 4;
+                int MAX_PLAYERS = 2;
                 for(int i = 0; i<MAX_PLAYERS; i++) {
                     String name = client.getName();
                     game.addToScoreBoard(name);
@@ -114,9 +114,6 @@ public class Game extends Application implements Initializable {
 
     private int gridSize;
     private Timeline timeline;
-
-    Image missedShot = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/board/marker_miss_64.png")).toString());
-    Image hitShot = new Image(Objects.requireNonNull(this.getClass().getResource("sprites/board/marker_hit_64.png")).toString());
 
     GridHandler backgroundGrid_1;
     GridHandler backgroundGrid_2;
@@ -199,24 +196,26 @@ public class Game extends Application implements Initializable {
 
     public void setShot(boolean missed, int quarter, int pos) {
         if(missed) {
+            Marker marker = new Marker(pos, true, gridSize);
             if(quarter == 0)
-                backgroundGrid_1.fillRectangle(pos, missedShot);
+                boardPane1.getChildren().add(marker.getRectangle());
             else if(quarter == 1)
-                backgroundGrid_2.fillRectangle(pos, missedShot);
+                boardPane2.getChildren().add(marker.getRectangle());
             else if(quarter == 2)
-                backgroundGrid_3.fillRectangle(pos, missedShot);
+                boardPane3.getChildren().add(marker.getRectangle());
             else if(quarter == 3)
-                backgroundGrid_4.fillRectangle(pos, missedShot);
+                boardPane4.getChildren().add(marker.getRectangle());
         }
         else {
+            Marker marker = new Marker(pos, false, gridSize);
             if(quarter == 0)
-                backgroundGrid_1.fillRectangle(pos, hitShot);
+                boardPane1.getChildren().add(marker.getRectangle());
             else if(quarter == 1)
-                backgroundGrid_2.fillRectangle(pos, hitShot);
+                boardPane2.getChildren().add(marker.getRectangle());
             else if(quarter == 2)
-                backgroundGrid_3.fillRectangle(pos, hitShot);
+                boardPane3.getChildren().add(marker.getRectangle());
             else if(quarter == 3)
-                backgroundGrid_4.fillRectangle(pos, hitShot);
+                boardPane4.getChildren().add(marker.getRectangle());
         }
     }
 
@@ -289,7 +288,7 @@ public class Game extends Application implements Initializable {
         long second = timeLimit / 1000;
         long millisecond = (timeLimit % 1000) / 10;
         String time = String.format("%02d:%02d", second, millisecond);
-        timeLabel.setText(time);;
+        timeLabel.setText(time);
 
         if(timeLimit <= 0) {
             timeline.stop();
