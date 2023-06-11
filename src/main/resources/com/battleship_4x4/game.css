@@ -1,0 +1,4 @@
+.board {
+    -fx-background-image: url('sprites/board/full_board_frame_64.png');
+    -fx-background-size: 842 842;
+}
