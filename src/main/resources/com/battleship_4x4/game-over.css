@@ -1,0 +1,23 @@
+.background {
+    -fx-background-image: url('sprites/UI/background_over.png');
+}
+
+.board {
+    -fx-background-image: url('sprites/UI/scoreboard_broken_480.png');
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 300;
+}
+
+.button {
+    -fx-background-image: url('sprites/UI/button_smaller.png');
+    -fx-background-size: 140;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+    -fx-background-color: none;
+}
+
+.button:hover {
+    -fx-background-image: url('sprites/UI/button_smaller_hover.png');
+    -fx-background-size: 140;
+}

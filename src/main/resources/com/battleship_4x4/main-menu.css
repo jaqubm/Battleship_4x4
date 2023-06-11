@@ -11,7 +11,7 @@
 
 .otherButton {
     -fx-background-image: url('sprites/UI/button_smaller.png');
-    -fx-background-size: 130;
+    -fx-background-size: 140;
     -fx-background-position: center;
     -fx-background-repeat: no-repeat;
     -fx-background-color: none;
@@ -19,7 +19,7 @@
 
 .otherButton:hover {
     -fx-background-image: url('sprites/UI/button_smaller_hover.png');
-    -fx-background-size: 130;
+    -fx-background-size: 140;
 }
 
 .exitButton {
@@ -27,8 +27,10 @@
 }
 
 .exitButton:hover {
-    -fx-background-color: white 0.25;
-    -fx-opacity: 0.25;
+    -fx-background-image: url('sprites/UI/hover_effect.png');
+    -fx-background-size: 160;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
 }
 
 .loading {
