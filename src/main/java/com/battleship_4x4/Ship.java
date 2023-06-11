@@ -79,9 +79,6 @@ public class Ship
     public boolean getDirection(){return this.direction;}
     public void setDirection(boolean dir) {this.direction = dir;}
 
-    public void setBoardX(double x) {this.boardX = x;}
-    public void setBoardY(double y) {this.boardY = y;}
-
     public double getBoardY() {return this.boardY;}
     public double getBoardX() {return this.boardX;}
 }

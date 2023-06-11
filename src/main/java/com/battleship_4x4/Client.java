@@ -26,8 +26,7 @@ public class Client {
      */
     Client(String name, Inet4Address addressIP) throws IOException {
         try {
-            this.socket = new Socket(Inet4Address.getByName(null), 5000);
-            //this.socket = new Socket(addressIP, 5000);
+            this.socket = new Socket(addressIP, 5000);
 
             this.input = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
             this.output = new DataOutputStream(socket.getOutputStream());
@@ -54,6 +53,11 @@ public class Client {
         socket.close();
     }
 
+    /**
+     * Function to read players names
+     * @return String sent by Server
+     * @throws IOException Error
+     */
     public String getName() throws IOException {
         return input.readUTF();
     }

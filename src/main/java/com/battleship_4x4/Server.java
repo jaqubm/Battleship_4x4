@@ -158,8 +158,7 @@ public class Server extends Application implements Runnable{
             Inet4Address serverIP = (Inet4Address) Inet4Address.getByName(serverIPTextField.getText());
 
             int PORT = 5000;
-            server = new ServerBackend(PORT, MAX_PLAYERS, (Inet4Address) Inet4Address.getByName(null));
-            //server = new ServerBackend(PORT, MAX_PLAYERS, serverIP);
+            server = new ServerBackend(PORT, MAX_PLAYERS, serverIP);
 
             waitingForPlayers();
 
@@ -380,6 +379,12 @@ public class Server extends Application implements Runnable{
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+        }
+
+        try {
+            server.closeServer();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }
