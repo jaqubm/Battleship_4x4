@@ -33,6 +33,7 @@
       </AnchorPane>
       <AnchorPane fx:id="serverMainView" prefHeight="320.0" prefWidth="320.0" visible="false">
          <children>
+            <AnchorPane layoutX="110.0" layoutY="200.0" prefHeight="100.0" prefWidth="100.0" styleClass="loading" stylesheets="@main-menu.css" />
             <Label fx:id="gameStatus" alignment="CENTER" layoutY="143.0" prefWidth="320.0">
                <font>
                   <Font name="System Bold" size="24.0" />

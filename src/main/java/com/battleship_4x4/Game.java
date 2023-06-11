@@ -29,7 +29,7 @@ class GameThread implements Runnable {
     Client client;  //Communication with server
 
     Game game;  //Game Controller
-    private final long ROUND_TIME = 50000;   //Round time in ms
+    private final long ROUND_TIME = 5000;   //Round time in ms
 
     public void setGame(Client client, Game game) {
         this.client = client;
